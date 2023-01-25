@@ -22,7 +22,7 @@ Task Ruler can help you:
 
 Use your Android device to create tasks and sub tasks to help keep your organized.\
 Associate tasks to your Google calendar.\
-Save tasks to use as templates.\
+Save tasks to use as templates.
 
 ## Storyboard
 
