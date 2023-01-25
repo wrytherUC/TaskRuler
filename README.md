@@ -123,7 +123,6 @@ Common names are stated in English.
 
 ## Class Diagram
 
-![ClassDiagram](https://user-images.githubusercontent.com/2224876/82162015-54387780-986f-11ea-998f-a45fdf8c3bf1.png)
 ![ClassDiagram](https://github.com/wrytherUC/TaskRuler/blob/master/Copy%20of%20Executive%20Dysfunction%20App.drawio.png)
 
 ### Class Diagram Description
