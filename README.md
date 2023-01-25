@@ -12,8 +12,7 @@ Authors:
 
 ## Introduction
 
-Is it hard for you to organize and concentrate on tasks you need to do?\
-Do you find yourself focusing to hard on a task and lose track of time?\ 
+Is it hard for you to organize and concentrate on tasks you need to do? Do you find yourself focusing to hard on a task and lose track of time?\
 Task Ruler can help you:
 
 -	Create tasks and sub tasks.
@@ -21,9 +20,9 @@ Task Ruler can help you:
 -	Set up alarms on when to start.
 -	Set timers for task to help take you out of a hyper focused state.
 
-Use your Android device to create tasks and sub tasks to help keep your organized. \
-Associate tasks to your Google calendar. \
-Save tasks to use as templates.Take photos with the on-device camera. \
+Use your Android device to create tasks and sub tasks to help keep your organized.\
+Associate tasks to your Google calendar.\
+Save tasks to use as templates.\
 
 ## Storyboard
 
