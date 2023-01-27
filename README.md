@@ -128,19 +128,17 @@ Common names are stated in English.
 ### Class Diagram Description
 
 
-**MainActivity:**  The first screen the user sees.  This will have a list of specimens, and an option to enter a new specimen.
-
-**SpecimenDetailsActivity:**  A screen that shows details of a specimen.
+**MainActivity:**  The first screen the user sees.  This will have a place to list their tasks. And a button to start the task timer that will appear on a sperate page. Also a button  that  will open a  task calendar
 
 **RetrofitInstance:** Boostrap class required for Retrofit.
 
-**Plant:** Noun class that represents a plant.
+**Task:** Noun class that represents task
 
-**Specimen:** Noun class that represents a specimen.
+**Timer:** Noun class that represents a timer.
 
-**IPlantDAO:** Interface for Retrofit to find and parse Plant JSON.
+**ITaskDAO:** Interface for Retrofit to find and parse Task JSON.
 
-**ISpecimenDAO:** Interface for Room to persist Specimen data
+**ITimerDAO:** Interface for Room to persist Timer data
 
 ## Scrum Roles
 
