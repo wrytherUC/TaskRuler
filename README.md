@@ -52,27 +52,19 @@ Multiple tasks are being done
 #### Examples
 1.1
 
-**Given** a daily task needs to be recorded 
+**Given** a daily task needs to be recorded, or user is curious about time spent doing dailty task
 
-**When**  a user wants to record or becomes curious about time spent doing daily task
+**When**  a user opens application, that would see task greeting
 
-**Then** User would open application, press home button which should pull basic list and allow user to begin basic android timer for task
+**Then** press home button which should pull basic list and allow user to begin basic android timer for task
 
 
 1.2  
-**Given** a feed of plant data is available
+**Given** a person has numerous task to accomplish in a hour or two before places close
 
-**When** I search for “Quercus”
+**When**  User opens applications
 
-**Then** I should receive at least one result with these attributes:
-
-Genus: Quercus  
-Species: robur  
-Common: English Oak  
-And I should receive at least one result with these attributes:  
-Genus: Quercus  
-Species: alba  
-Common: White Oak
+**Then** A list view of user entered scheduled tasks will show ,from closet to deadline to furthest with active timer alerting them of deadline
 
 1.3  
 **Given** a feed of plant data is available  
@@ -95,15 +87,6 @@ App has permission to edit the calendar of the user
 User has a google account connected to a calendar
 
 #### Examples
-
-1.1  
-**Given** a feed of plant data is available  
-**Given** GPS details are available  
-**When**
-
--	Select the plant Asimina triloba
--	Add notes: “planted by Brandan Jones”  
-     **Then**  when I navigate to the Specimen History view, I should see at least one Asimina triloba specimen with the notes, “planted by Brandan Jones”
 
 2.1  
 **Given** a feed of plant data is available  
