@@ -52,17 +52,11 @@ Multiple tasks are being done
 #### Examples
 1.1
 
-**Given** a feed of plant data is available
+**Given** a daily task needs to be recorded 
 
-**When**  I search for “Redbud”
+**When**  a user wants to record or becomes curious about time spent doing daily task
 
-**Then** I should receive at least one result with these attributes:
-
-Genus: Cercis
-
-Species: canadensis
-
-Common: Eastern Redbud
+**Then** User would open application, press home button which should pull basic list and allow user to begin basic android timer for task
 
 
 1.2  
