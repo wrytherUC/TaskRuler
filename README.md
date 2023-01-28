@@ -52,11 +52,11 @@ Multiple tasks are being done
 #### Examples
 1.1
 
-**Given** a daily task needs to be recorded, or user is curious about time spent doing dailty task
+**Given** A daily task needs to be recorded, or user is curious about time spent doing dailty task
 
-**When**  a user opens application, that would see task greeting
+**When** A user opens application, they would see task greeting
 
-**Then** press home button which should pull basic list and allow user to begin basic android timer for task
+**Then** Press home button which should pull basic list and allow user to begin basic android timer for task
 
 
 1.2  
