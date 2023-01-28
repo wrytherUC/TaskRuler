@@ -33,21 +33,21 @@ Save tasks to use as templates.
 
 ## Functional Requirements
 
-### Requirement 100.0: Search for Plants
+### Requirement 100.0: Start timer
 
 #### Scenario
 
-As a user interested in plants, I want to be able to search plants based on any part of the name: genus, species, cultivar, or common name.
+A user that wants to do specific tasks for a day. 
 
 #### Dependencies
 
-Plant search data are available and accessible.
+Android timer feature is available.
 
 #### Assumptions
 
-Scientific names are stated in Latin.
+All tasks are entered in minutes
 
-Common names are stated in English.
+Multiple tasks are being done
 
 #### Examples
 1.1
@@ -86,20 +86,19 @@ Common: White Oak
 **Then** I should receive zero results (an empty list)
 
 
-### Requirement 101: Save Specimen
+### Requirement 101.0: Save Tasks for a future day
 
 #### Scenario
 
-As a user interested in plants, I want to be able to enter and save details of a specimen: date planted, photos, and locations, so that I can view a history of this plant.
+A user has plans to do tasks on a different day and wants to mark them down for that day
 
 #### Dependencies
-Plant search data are available and accessible.  
-The device has a camera, and the user has granted access to the camera.  
-The device has GPS capabilities, and the user has granted location access.
+A calendar feature is available on the phone
+App has permission to edit the calendar of the user
+
 
 #### Assumptions
-Scientific names are stated in Latin.  
-Common names are stated in English.
+User has a google account connected to a calendar
 
 #### Examples
 
@@ -120,6 +119,31 @@ Common names are stated in English.
 -	Select the plant Malus domestica ‘Fuji’
 -	Take a photo of a Fuji apple seedling  
      **Then** when I navigate to the Specimen History view, I should see at least one Malus domestica ‘Fuji’ specimen with the a photo of a Fuji apple seedling.
+         
+#### Requirement 102.0 Add Subtasks to a task
+
+#### Scenario 
+A user had subtasks to do within a single task
+
+#### Depedencies
+A user has entered a task
+
+#### Assumptions
+The user's subtasks timers will equal the total amount of time of the overhead task
+The subtasks are wanted to be timed separately 
+
+
+#### Requirement 103.0 Have a reminder/alarm for tasks
+
+#### Scenario
+A user is being reminded about their taks for the day
+
+#### Depedencies
+Notifications for the app are turned on
+
+#### Assumptions
+The user wants to be reminded of the tasks that they want to do today
+
 
 ## Class Diagram
 
