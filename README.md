@@ -45,14 +45,14 @@ Android timer feature is available.
 
 #### Assumptions
 
-All tasks are entered in minutes
+All tasks are entered in minutes.
 
-Multiple tasks are being done
+Multiple tasks are being done.
 
 #### Examples
 1.1
 
-**Given** A daily task needs to be recorded, or user is curious about time spent doing dailty task
+**Given** A daily task needs to be recorded, or user is curious about time spent doing daily task
 
 **When** A user opens application, they would see task greeting
 
@@ -60,17 +60,11 @@ Multiple tasks are being done
 
 
 1.2  
-**Given** a person has numerous task to accomplish in a hour or two before places close
+**Given** A person has numerous task to accomplish in a hour or two before places close
 
 **When**  User opens applications
 
 **Then** A list view of user entered scheduled tasks will show ,from closet to deadline to furthest with active timer alerting them of deadline
-
-1.3  
-**Given** a feed of plant data is available  
-**When** I search for “sklujapouetllkjsda;u”  
-**Then** I should receive zero results (an empty list)
-
 
 ### Requirement 101.0: Save Tasks for a future day
 
@@ -80,10 +74,11 @@ A user has plans to do tasks on a different day and wants to mark them down for 
 
 #### Dependencies
 A calendar feature is available on the phone
+
 App has permission to edit the calendar of the user
 
-
 #### Assumptions
+
 User has a google account connected to a calendar
 
 #### Examples
@@ -113,14 +108,16 @@ The subtasks are wanted to be timed separately
 #### Requirement 103.0 Have a reminder/alarm for tasks
 
 #### Scenario
-A user is being reminded about their taks for the day
 
-#### Depedencies
+A user is being reminded about their tasks for the day
+
+#### Dependencies
+
 Notifications for the app are turned on
 
 #### Assumptions
-The user wants to be reminded of the tasks that they want to do today
 
+The user wants to be reminded of the tasks that they want to do today
 
 ## Class Diagram
 
@@ -153,6 +150,6 @@ The user wants to be reminded of the tasks that they want to do today
 
 ## Weekly Meeting
 
-First Meeting: Monday at 6:30 PM
-Second Meeting: Friday 6:30 PM/Saturday 2 PM
+First Meeting: Tuesdays at 6:30 PM
+Second Meeting: Fridays 6:30 PM
 Meeting: Teams Group
