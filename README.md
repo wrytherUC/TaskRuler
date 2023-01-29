@@ -12,17 +12,18 @@ Authors:
 
 ## Introduction
 
-Is it hard for you to organize and concentrate on tasks you need to do? Do you find yourself focusing to hard on a task and lose track of time?\
+Is it hard for you to organize and concentrate on tasks you need to do? Do you find yourself focusing to hard on a task and lose track of time?
+
 Task Ruler can help you:
 
--	Create tasks and sub tasks.
--	Add the tasks to your calendar.
--	Set up alarms on when to start.
--	Set timers for task to help take you out of a hyper focused state.
+- Create tasks and sub tasks.
+- Add the tasks to your calendar.
+- Set up alarms on when to start.
+- Set timers for task to help take you out of a hyper focused state.
+- Associate tasks to your Google calendar.
+- Save tasks to use as templates.
 
-Use your Android device to create tasks and sub tasks to help keep your organized.\
-Associate tasks to your Google calendar.\
-Save tasks to use as templates.
+Use your Android device to create tasks and sub tasks to help keep your organized.
 
 ## Storyboard
 
@@ -132,17 +133,17 @@ Save tasks to use as templates.
 
 ### Class Diagram Description
 
-**MainActivity:**  The first screen the user sees.  This will have a place to list their tasks. And a button to start the task timer that will appear on a sperate page. Also a button  that  will open a  task calendar
+- **MainActivity:**  The first screen the user sees.  This will have a place to list their tasks. And a button to start the task timer that will appear on a sperate page. Also a button  that  will open a  task calendar
 
-**RetrofitInstance:** Boostrap class required for Retrofit.
+- **RetrofitInstance:** Boostrap class required for Retrofit.
 
-**Task:** Noun class that represents task
+- **Task:** Noun class that represents task
 
-**Timer:** Noun class that represents a timer.
+- **Timer:** Noun class that represents a timer.
 
-**ITaskDAO:** Interface for Retrofit to find and parse Task JSON.
+- **ITaskDAO:** Interface for Retrofit to find and parse Task JSON.
 
-**ITimerDAO:** Interface for Room to persist Timer data
+- **ITimerDAO:** Interface for Room to persist Timer data
 
 ## Scrum Roles
 
