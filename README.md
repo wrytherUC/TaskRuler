@@ -88,14 +88,15 @@ Use your Android device to create tasks and sub tasks to help keep your organize
 
 2.1  
 
-**Given** a feed of plant data is available  
-**Given** GPS details are available  
+**Given** a user has plans they would like to plan for ahead of time
+
+**Given** a Store ahead of time fuction is implmented into our delelopment process
 **When**
 
--	Select the plant Malus domestica ‘Fuji’
--	Take a photo of a Fuji apple seedling  
-     **Then** when I navigate to the Specimen History view, I should see at least one Malus domestica ‘Fuji’ specimen with the a photo of a Fuji apple seedling.
-         
+-	Begin task creation select "later date"
+-	Find Day that you actually need
+     **Then** Create task needed ahead of time and get constant updates for that specfic task 
+     
 #### Requirement 102.0 Add Subtasks to a task
 
 #### Scenario 
