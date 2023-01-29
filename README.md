@@ -36,19 +36,20 @@ Save tasks to use as templates.
 
 #### Scenario
 
-A user that wants to do specific tasks for a day. 
+- A user that wants to do specific tasks for a day. 
 
 #### Dependencies
 
-Android timer feature is available.
+- Android timer feature is available.
 
 #### Assumptions
 
-All tasks are entered in minutes.
+- All tasks are entered in minutes.
 
-Multiple tasks are being done.
+- Multiple tasks are being done.
 
 #### Examples
+
 1.1
 
 **Given** A daily task needs to be recorded, or user is curious about time spent doing daily task
@@ -59,6 +60,7 @@ Multiple tasks are being done.
 
 
 1.2  
+
 **Given** A person has numerous task to accomplish in a hour or two before places close
 
 **When**  User opens applications
@@ -69,20 +71,22 @@ Multiple tasks are being done.
 
 #### Scenario
 
-A user has plans to do tasks on a different day and wants to mark them down for that day
+- A user has plans to do tasks on a different day and wants to mark them down for that day
 
 #### Dependencies
-A calendar feature is available on the phone
 
-App has permission to edit the calendar of the user
+- A calendar feature is available on the phone
+
+- App has permission to edit the calendar of the user
 
 #### Assumptions
 
-User has a google account connected to a calendar
+- User has a google account connected to a calendar
 
 #### Examples
 
 2.1  
+
 **Given** a feed of plant data is available  
 **Given** GPS details are available  
 **When**
@@ -94,36 +98,39 @@ User has a google account connected to a calendar
 #### Requirement 102.0 Add Subtasks to a task
 
 #### Scenario 
-A user had subtasks to do within a single task
 
-#### Depedencies
-A user has entered a task
+- A user had subtasks to do within a single task
+
+#### Dependencies
+
+- A user has entered a task
 
 #### Assumptions
-The user's subtasks timers will equal the total amount of time of the overhead task
-The subtasks are wanted to be timed separately 
+
+- The user's subtasks timers will equal the total amount of time of the overhead task
+
+- The subtasks are wanted to be timed separately 
 
 
 #### Requirement 103.0 Have a reminder/alarm for tasks
 
 #### Scenario
 
-A user is being reminded about their tasks for the day
+- A user is being reminded about their tasks for the day
 
 #### Dependencies
 
-Notifications for the app are turned on
+- Notifications for the app are turned on
 
 #### Assumptions
 
-The user wants to be reminded of the tasks that they want to do today
+- The user wants to be reminded of the tasks that they want to do today
 
 ## Class Diagram
 
 ![ClassDiagram](https://github.com/wrytherUC/TaskRuler/blob/master/Copy%20of%20Executive%20Dysfunction%20App.drawio.png)
 
 ### Class Diagram Description
-
 
 **MainActivity:**  The first screen the user sees.  This will have a place to list their tasks. And a button to start the task timer that will appear on a sperate page. Also a button  that  will open a  task calendar
 
@@ -149,6 +156,6 @@ The user wants to be reminded of the tasks that they want to do today
 
 ## Weekly Meeting
 
-First Meeting: Tuesdays at 6:30 PM
-Second Meeting: Fridays 6:30 PM
-Meeting: Teams Group
+- First Meeting: Tuesdays at 6:30 PM
+- Second Meeting: Fridays 6:30 PM
+- Meeting: Teams Group
