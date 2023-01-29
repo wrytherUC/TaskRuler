@@ -127,6 +127,24 @@ Use your Android device to create tasks and sub tasks to help keep your organize
 
 - The user wants to be reminded of the tasks that they want to do today
 
+#### Examples
+
+4.1 
+
+**Given** a user wants to have a reminder for Friday at 8 PM
+
+**When** they need to take the trash out for pickup on Saturday
+
+**Then** an alarm can be added to the task that will go off on Friday at 8 PM
+
+4.2
+
+**Given** a user wants to have a reminder for Saturday at 3 PM
+
+**When** there is a party to attend at 5 PM
+
+**Then**  a Google calendar reminder can be created for Saturday at 3 PM
+
 ## Class Diagram
 
 ![ClassDiagram](https://github.com/wrytherUC/TaskRuler/blob/master/Copy%20of%20Executive%20Dysfunction%20App.drawio.png)
