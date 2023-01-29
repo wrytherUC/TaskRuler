@@ -112,6 +112,26 @@ Use your Android device to create tasks and sub tasks to help keep your organize
 
 - The subtasks are wanted to be timed separately 
 
+#### Examples
+
+3.1
+
+**Given** a user has two homework assignments due for a week long module
+
+**When** they need help setting up time to do them at separate times
+
+**Then** a subtask can be set up for each assignment that will be associated to the main task for
+the their weekly module homework task
+
+3.2
+
+**Given** a user needs to do laundry
+
+**When** it will take multiple steps to do, including gathering the laundry, bringing the laundry to the
+laundry area, adding the clothes to the dryer, switching them to the dryer, folding the clothes, and 
+putting the clothes away
+
+**Then** a subtask can be created for each step, each task being associated to the main task of doing laundry
 
 #### Requirement 103.0 Have a reminder/alarm for tasks
 
