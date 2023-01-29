@@ -26,10 +26,9 @@ Save tasks to use as templates.
 
 ## Storyboard
 
-[Task Ruler Storyboard](https://projects.invisionapp.com/prototype/Plant-Diary-ck0bict0n005bqh01aaeu8tuu/play/c6560121)
+[Task Ruler Storyboard](https://projects.invisionapp.com/freehand/document/2fhhFHCLk)
 
-#Example
-![MyPlantDiaryFirstScreen](https://user-images.githubusercontent.com/2224876/82161817-15ee8880-986e-11ea-8cda-f04ad1412893.png)
+![Task Ruler First Screen](https://github.com/wrytherUC/TaskRuler/blob/master/TaskRulerMainScreenStoryboard.png)
 
 ## Functional Requirements
 
