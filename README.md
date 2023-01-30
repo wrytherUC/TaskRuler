@@ -90,12 +90,14 @@ Use your Android device to create tasks and sub tasks to help keep your organize
 
 **Given** a user has plans they would like to plan for ahead of time
 
-**Given** a Store ahead of time fuction is implmented into our delelopment process
+**Given** a Store ahead of time function is implemented into our development process
+
 **When**
 
--	Begin task creation select "later date"
--	Find Day that you actually need
-     **Then** Create task needed ahead of time and get constant updates for that specfic task 
+- Begin task creation select "later date"
+- Find Day that you actually need
+
+**Then** Associate the task to the user's google calendar on the day specified
      
 #### Requirement 102.0 Add Subtasks to a task
 
