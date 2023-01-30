@@ -196,6 +196,10 @@ putting the clothes away
 
 [https://github.com/wrytherUC/TaskRuler](https://github.com/wrytherUC/TaskRuler)
 
+## Product Backlog
+
+[Task Ruler Backlog](https://github.com/users/wrytherUC/projects/1)
+
 ## Weekly Meeting
 
 - First Meeting: Tuesdays at 6:30 PM
