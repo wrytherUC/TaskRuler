@@ -88,7 +88,7 @@ Task Ruler can help you:
 
 **Given** a user has plans they would like to plan for ahead of time
 
-**Given** a Store ahead of time function is implemented into our development process
+**And** a Store ahead of time function is implemented into our development process
 
 **When**
 
