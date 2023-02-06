@@ -35,7 +35,7 @@ Task Ruler can help you:
 
 #### Scenario
 
-- A user that wants to do specific tasks for a day. 
+- As a user, I want a timer for each task so that I can make sure not to spend any more time than needed.
 
 #### Dependencies
 
@@ -70,7 +70,7 @@ Task Ruler can help you:
 
 #### Scenario
 
-- A user has plans to do tasks on a different day and wants to mark them down for that day
+- As a user, I want save created tasks to a calendar app so that I can see what tasks I need to do on any given present or future day.
 
 #### Dependencies
 
@@ -101,7 +101,7 @@ Task Ruler can help you:
 
 #### Scenario 
 
-- A user had subtasks to do within a single task
+- As a user, I want to create subtasks for any task so that I can keep better time keeping, make a task more manageable, and divide parts of a task to not feel overwhelmed.
 
 #### Dependencies
 
@@ -138,7 +138,7 @@ putting the clothes away
 
 #### Scenario
 
-- A user is being reminded about their tasks for the day
+- As a user, I want reminders for any tasks or subtasks so that I do not forget to perform them.
 
 #### Dependencies
 
