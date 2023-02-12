@@ -3,7 +3,7 @@ package com.taskruler.dto
 import androidx.room.Entity
 
 @Entity(tableName="timers")
-data class Timer {
+data class Timer (var timerId : Int, var taskId : Int, var secondsRemaining : Int) {
 
 }
 
