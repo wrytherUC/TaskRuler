@@ -46,25 +46,8 @@ class TaskTests {
 
     }
 
-    @Test
-    fun `Delete task from database`() {
-        givenTaskDatabaseExists()
-        whenDeleteButtonisClicked()
-        deleteTask()
-
-    }
-
-    private fun deleteTask() {
-      var removeTask = tasks
 
 
-
-
-    }
-
-    private fun whenDeleteButtonisClicked() {
-
-    }
 
 
 }
