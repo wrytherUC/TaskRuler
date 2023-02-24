@@ -46,6 +46,27 @@ class TaskTests {
 
     }
 
+    @Test
+    fun `Delete task from database`() {
+        givenTaskDatabaseExists()
+        whenDoLaundryisEntered()
+        deleteTask()
+
+    }
+
+    private fun deleteTask() {
+        var removeTask = tasks
+
+        if (removeTask != null) {
+            removeTask.drop(0)
+        }
+
+        tasks = removeTask
+
+
+    }
+
+
 
 
 
