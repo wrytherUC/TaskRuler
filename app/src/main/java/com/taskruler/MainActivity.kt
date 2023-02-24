@@ -3,6 +3,7 @@ package com.taskruler
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -30,13 +31,40 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    var activityName by remember { mutableStateOf("")}
-    TextField (
-        value = activityName,
-        onValueChange = {activityName = it},
-        label = { Text(stringResource(R.string.activtyName))}
-    )
-}
+
+    var activityName by remember { mutableStateOf("") }
+    var activityName2 by remember { mutableStateOf("") }
+    var activityName3 by remember { mutableStateOf("") }
+    var futureActivity by remember { mutableStateOf("") }
+
+    Column {
+        TextField(
+            value = activityName,
+            onValueChange = { activityName = it },
+            label = { Text(stringResource(R.string.activtyName)) }
+        )
+
+
+        TextField(
+            value = activityName2,
+            onValueChange = { activityName2 = it },
+            label = { Text(stringResource(R.string.activityName2)) }
+        )
+
+        TextField(
+            value = activityName3,
+            onValueChange = { activityName3 = it },
+            label = { Text(stringResource(R.string.activityName3)) }
+        )
+
+        TextField(
+            value = futureActivity,
+            onValueChange = { futureActivity = it },
+            label = { Text(stringResource(R.string.futureActivity)) }
+        )
+    }
+    }
+
 
 @Preview(showBackground = true)
 @Composable
