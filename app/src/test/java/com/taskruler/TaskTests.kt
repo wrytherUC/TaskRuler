@@ -145,9 +145,7 @@ class TaskTests {
 
         coEvery { mockTaskService.getTasks() } returns tasks
 
-        mvm = MainViewModel()
-
-        mvm.taskService = mockTaskService
+        mvm = MainViewModel(taskService = mockTaskService)
 
     }
 
