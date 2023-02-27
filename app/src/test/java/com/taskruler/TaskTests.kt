@@ -57,9 +57,8 @@ class TaskTests {
 
 
     //Test File
-    /*
     @Test
-    fun `Given when task data is available when I search for taskId of 1 should return "Do the Dishes"`() = runTest {
+    fun `Given when task data is available when I search for taskId of 1 should return Do the Dishes` () = runTest {
         givenTaskServiceIsIntialized()
         whenTaskDataAreReadandParsed()
         thenTheTaskCollectionShouldContainDoTheDishes()
@@ -78,14 +77,12 @@ class TaskTests {
         assertTrue((allTasks!!.isNotEmpty()))
         var containsDoDishes = false
         allTasks!!.forEach {
-            if(it.taskName.equals(("Do the Dishes")) && it.taskId.equals(0)){
+            if(it.taskName.equals(("Do the dishes")) && it.taskId.equals(0)){
                 containsDoDishes = true
             }
         }
         assertTrue(containsDoDishes)
     }
-
-     */
 
     @Test
     fun `Add a task to a Database`() {
