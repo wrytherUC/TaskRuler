@@ -7,11 +7,11 @@ import com.taskruler.dto.Task
 import com.taskruler.service.TaskService
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(var taskService : TaskService = TaskService()) : ViewModel() {
 
 
     var tasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
-    var taskService : TaskService = TaskService()
+
 
     fun getTasks() {
         viewModelScope.launch {
