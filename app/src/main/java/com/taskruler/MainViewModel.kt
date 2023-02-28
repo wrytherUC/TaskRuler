@@ -9,9 +9,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(var taskService : TaskService = TaskService()) : ViewModel() {
 
-
     var tasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
-
 
     fun getTasks() {
         viewModelScope.launch {
