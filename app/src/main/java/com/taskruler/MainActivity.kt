@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +28,15 @@ class MainActivity : ComponentActivity() {
             val tasks by viewModel.tasks.observeAsState(initial = emptyList())
             TaskRulerTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     Greeting("Android")
                 }
             }
         }
     }
-}
-
 @Composable
 fun Greeting(name: String) {
 
@@ -92,4 +94,4 @@ fun DefaultPreview() {
     TaskRulerTheme {
         Greeting("Android")
     }
-}
+}}
