@@ -5,17 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+
 import androidx.compose.material.*
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.taskruler.ui.theme.TaskRulerTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            viewModel.getTasks()
+            val tasks by viewModel.tasks.observeAsState(initial = emptyList())
             TaskRulerTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
@@ -36,17 +45,20 @@ fun Greeting(name: String) {
 
     Column {
 
+
         Button(onClick = { /*TODO*/ })
         {Text(text = "Home")}
 
         Button(onClick = { /*TODO*/ })
         {Text(text = "Task Timed")}
 
+
         TextField(
             value = activityName,
             onValueChange = { activityName = it },
             label = { Text(stringResource(R.string.activtyName)) }
         )
+
 
         TextField(
             value = activityName2,
@@ -65,8 +77,10 @@ fun Greeting(name: String) {
             onValueChange = { futureActivity = it },
             label = { Text(stringResource(R.string.futureActivity)) }
         )
+
         Button(onClick = { /*TODO*/ })
         {Text(text = "Start Timer")}
+
 
     }
     }

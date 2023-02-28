@@ -8,8 +8,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
-class TaskService {
-   suspend fun getTasks() : List<Task>? {
+interface ITaskService {
+    suspend fun getTasks() : List<Task>?
+}
+
+class TaskService : ITaskService {
+   override suspend fun getTasks() : List<Task>? {
     return withContext(Dispatchers.IO){
         val service = RetrofitClientInstance.retrofitInstance?.create(ITaskDAO::class.java)
         val tasks = async {service?.getAllTasks()}

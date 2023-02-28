@@ -31,40 +31,40 @@ Task Ruler can help you:
 
 ## Functional Requirements
 
-### Requirement 100.0: Start timer
+### Requirement 100.0: Add task
 
 #### Scenario
 
-- As a user, I want a timer for each task so that I can make sure not to spend any more time than needed.
+- As a user, I want to add a task to the app
 
 #### Dependencies
 
-- Android timer feature is available.
+- The app is Installed on the device and there is a database that holds tasks
 
 #### Assumptions
 
-- All tasks are entered in minutes.
+- Tasks are entered in word
 
-- Multiple tasks are being done.
+- Only one task is being entered
 
 #### Examples
 
 1.1
 
-**Given** A daily task needs to be recorded, or user is curious about time spent doing daily task
+**Given :** A user wants to add the task "Do laundry" to their databse of tasks
 
-**When** A user opens application, they would see task greeting
+**When :** A user opens the app
 
-**Then** Press home button which should pull basic list and allow user to begin basic android timer for task
+**Then :** They can enter a ""Do Laundry" to their database
 
 
 1.2  
 
-**Given** A person has numerous task to accomplish in a hour or two before places close
+**Given :** Wants to delete "Do Laundry" from their tasks 
 
-**When**  User opens applications
+**When :**  A user has entered "Do Laundry on their tasks"
 
-**Then** A list view of user entered scheduled tasks will show ,from closet to deadline to furthest with active timer alerting them of deadline
+**Then :** They can press a delete button and delete the task from their database
 
 ### Requirement 101.0: Save Tasks for a future day
 
@@ -86,11 +86,11 @@ Task Ruler can help you:
 
 2.1  
 
-**Given** a user has plans they would like to plan for ahead of time
+**Given :** A user wants to add the task do laundry on Feburary 23, 2023
 
-**And** a Store ahead of time function is implemented into our development process
+**And :** a Store ahead of time function is implemented into our development process
 
-**When**
+**When :**
 
 - Begin task creation select "later date"
 - Find Day that you actually need
