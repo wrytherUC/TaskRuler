@@ -34,8 +34,6 @@ fun Greeting(name: String) {
     var activityName3 by remember { mutableStateOf("") }
     var futureActivity by remember { mutableStateOf("") }
 
-
-
     Column {
 
         Button(onClick = { /*TODO*/ })
@@ -49,7 +47,6 @@ fun Greeting(name: String) {
             onValueChange = { activityName = it },
             label = { Text(stringResource(R.string.activtyName)) }
         )
-
 
         TextField(
             value = activityName2,
@@ -70,8 +67,6 @@ fun Greeting(name: String) {
         )
         Button(onClick = { /*TODO*/ })
         {Text(text = "Start Timer")}
-
-
 
     }
     }
