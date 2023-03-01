@@ -5,14 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.material.TextField
+
+import androidx.compose.material.*
+
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +28,15 @@ class MainActivity : ComponentActivity() {
             val tasks by viewModel.tasks.observeAsState(initial = emptyList())
             TaskRulerTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     Greeting("Android")
                 }
             }
         }
     }
-}
-
 @Composable
 fun Greeting(name: String) {
 
@@ -48,6 +46,15 @@ fun Greeting(name: String) {
     var futureActivity by remember { mutableStateOf("") }
 
     Column {
+
+
+        Button(onClick = { /*TODO*/ })
+        {Text(text = "Home")}
+
+        Button(onClick = { /*TODO*/ })
+        {Text(text = "Task Timed")}
+
+
         TextField(
             value = activityName,
             onValueChange = { activityName = it },
@@ -72,6 +79,11 @@ fun Greeting(name: String) {
             onValueChange = { futureActivity = it },
             label = { Text(stringResource(R.string.futureActivity)) }
         )
+
+        Button(onClick = { /*TODO*/ })
+        {Text(text = "Start Timer")}
+
+
     }
     }
 
@@ -82,4 +94,4 @@ fun DefaultPreview() {
     TaskRulerTheme {
         Greeting("Android")
     }
-}
+}}
