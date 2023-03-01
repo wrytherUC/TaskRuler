@@ -32,13 +32,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    LogActivity("Android")
                 }
             }
         }
     }
 @Composable
-fun Greeting(name: String) {
+fun LogActivity(name: String) {
 
     var activityName by remember { mutableStateOf("") }
     var activityName2 by remember { mutableStateOf("") }
@@ -92,6 +92,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     TaskRulerTheme {
-        Greeting("Android")
+        LogActivity("Android")
     }
 }}
