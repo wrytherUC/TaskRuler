@@ -2,6 +2,8 @@ package com.taskruler.dto
 
 import androidx.room.Entity
 
+
+
 @Entity(tableName="tasks")
 data class Task (var taskId : Int, var taskName : String, var isCompleted : Boolean) {
 }
