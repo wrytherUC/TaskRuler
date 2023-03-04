@@ -8,9 +8,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
+/**
+ * Service that will invoke the ITaskDAO class
+ */
 interface ITaskService {
-    /*
-        @returns a list of Tasks
+    /**
+     * Interface for the Task Service class
+     * Instantiated by Koin
+     * @returns a list of Tasks
      */
     suspend fun getTasks() : List<Task>?
 }
@@ -18,9 +23,9 @@ interface ITaskService {
 
 class TaskService : ITaskService {
 
-    /*
-        @returns a list of Tasks that the RetroClientInstance retrieves from the online source
-        @await for the retrofitClientInstance to retrieve the data from online and turn the JSON into tasks
+    /**
+     * @returns a list of Tasks that the RetroClientInstance retrieves from the online source
+     * @await for the retrofitClientInstance to retrieve the data from online and turn the JSON into tasks
      */
    override suspend fun getTasks() : List<Task>? {
     return withContext(Dispatchers.IO){
