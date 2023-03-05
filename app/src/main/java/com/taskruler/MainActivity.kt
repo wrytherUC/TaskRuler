@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +54,8 @@ fun Greeting(name: String) {
         Button(onClick = { /*TODO*/ })
         {Text(text = "Task Timed")}
 
+        Button(onClick = { /*TODO*/ })
+        {Text(text = "Start Timer")}
 
         TextField(
             value = activityName,
@@ -80,8 +82,7 @@ fun Greeting(name: String) {
             label = { Text(stringResource(R.string.futureActivity)) }
         )
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Start Timer")}
+
 
 
     }

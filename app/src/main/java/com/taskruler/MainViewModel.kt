@@ -24,7 +24,7 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
      */
     fun getTasks() {
         viewModelScope.launch {
-            var innerTasks = taskService.getTasks()
+            val innerTasks = taskService.getTasks()
             tasks.postValue(innerTasks)
         }
     }
