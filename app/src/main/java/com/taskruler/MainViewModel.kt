@@ -3,6 +3,7 @@ package com.taskruler
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.taskruler.dto.Task
 import com.taskruler.service.ITaskService
 import com.taskruler.service.TaskService
@@ -17,6 +18,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel() {
 
     var tasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
+
+    private lateinit var firestore : FirebaseFirestore
 
     /**
      * @return tasks from TaskService
