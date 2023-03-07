@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "889815770224",
+    "project_id": "taskruler-f96b5",
+    "storage_bucket": "taskruler-f96b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889815770224:android:9a711147ef1de88bc940b5",
+        "android_client_info": {
+          "package_name": "com.taskruler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889815770224-md5mlsqsscde7qksacc8q84t5jj4uu0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN8izO9irNrGSbrdMa_d22-eKuf7fkhzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889815770224-md5mlsqsscde7qksacc8q84t5jj4uu0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
