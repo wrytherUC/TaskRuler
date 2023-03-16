@@ -3,7 +3,9 @@ package com.taskruler.dto
 import androidx.room.Entity
 
 @Entity(tableName="UserTasks")
-data class UserTask (var userTaskID : Int, var userTaskName : String, var totalUserTaskTime : Int) {
+data class UserTask (var userTaskID : Int,
+                     var userTaskName : String,
+                     var totalUserTaskTime : Int) {
 
 }
 
