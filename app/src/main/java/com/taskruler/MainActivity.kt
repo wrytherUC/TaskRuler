@@ -1,6 +1,7 @@
 package com.taskruler
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.taskruler.dto.Task
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
+    private var user: FirebaseUser? = null
     private var selectedTask: Task? = null
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
@@ -112,6 +116,16 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
         )
         val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers).build()
+    }
+
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val callbackResponse = result.idpResponse
+        if (result.resultCode == RESULT_OK){
+            user = FirebaseAuth.getInstance().currentUser
+        }
+        else {
+            Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
+        }
     }
 
     @Composable
