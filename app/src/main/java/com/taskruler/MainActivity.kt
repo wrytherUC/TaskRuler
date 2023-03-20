@@ -95,8 +95,17 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
         Button(onClick = { /*TODO*/ })
         {Text(text = "Start Timer")}
 
+        Button(onClick = {
+            signIn()
+        })
+        {Text(text = "Logon")}
+
 
     }
+    }
+
+    private fun signIn() {
+        TODO("Not yet implemented")
     }
 
     @Composable
