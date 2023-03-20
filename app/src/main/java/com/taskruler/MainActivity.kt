@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.firebase.ui.auth.AuthUI
 import com.taskruler.dto.Task
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -105,7 +106,9 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
     }
 
     private fun signIn() {
-        TODO("Not yet implemented")
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build()
+        )
     }
 
     @Composable
