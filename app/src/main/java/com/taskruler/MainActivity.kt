@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.taskruler.dto.Task
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -109,6 +110,8 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build()
         )
+        val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
+            .setAvailableProviders(providers).build()
     }
 
     @Composable
