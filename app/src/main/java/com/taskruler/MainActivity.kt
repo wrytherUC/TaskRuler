@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -116,6 +117,12 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
         )
         val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers).build()
+    }
+
+    private val signInLauncher = registerForActivityResult (
+        FirebaseAuthUIActivityResultContract()
+    ) {
+            res -> this.signInResult(res)
     }
 
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
