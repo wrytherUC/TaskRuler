@@ -138,7 +138,8 @@ class TaskTests {
     }
 
     private fun givenViewModelIsItializedwithMockData() {
-        val tasks = ArrayList<Task>()
+        var tasks = ArrayList<Task>()
+        var i = 1+1
         tasks.add(Task(0,"Do the Dishes", false))
         tasks.add(Task(1,"Go to the store", false))
         tasks.add(Task(2,"Mop the Kitchen", true))
@@ -177,6 +178,7 @@ class TaskTests {
         assertTrue(containsDoDishes)
 
     }
+
 
 
 }

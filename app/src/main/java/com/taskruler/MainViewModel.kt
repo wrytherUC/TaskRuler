@@ -26,11 +26,13 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
 
     private lateinit var firestore : FirebaseFirestore
 
+
     init{
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        listenToTasks()
+        //listenToTasks()
     }
+
 
     private fun listenToTasks(){
         firestore.collection("tasks").addSnapshotListener{
@@ -54,6 +56,8 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
             }
         }
     }
+
+
 
     /**
      * @return tasks from TaskService
