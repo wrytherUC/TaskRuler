@@ -117,6 +117,8 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>()) {
         )
         val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers).build()
+
+        signInLauncher.launch(signInIntent)
     }
 
     private val signInLauncher = registerForActivityResult (
