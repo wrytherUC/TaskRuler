@@ -7,7 +7,7 @@ import androidx.room.Entity
  * Data Transfer Object to transfer tasks and task data from Retrofit to MVM
  */
 @Entity(tableName="tasks")
-data class Task (var taskId : Int = 0,
+data class Task (var taskId : String = "",
                  var taskName : String = "",
                  var isCompleted : Boolean = false ) {
     override fun toString(): String {
