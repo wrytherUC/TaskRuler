@@ -1,6 +1,9 @@
 package com.taskruler
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +27,7 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
 
     var tasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
     var spinnerTasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
+    var selectedTask by mutableStateOf(Task())
     var user : User? = null
 
     private lateinit var firestore : FirebaseFirestore
@@ -77,16 +81,18 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
      */
     fun saveTask() {
         user?.let {
-            val docuement =
-                if (selectedTask.taskId == null || selectedTask.taskId.isEmpty()) {
-                    //creating a new task document for specific user
-                    firestore.collection("users").document(user.uid).collection("tasks").document()
-                }
-                else {
-                    //updating an existing task document for specific user
-                    firestore.collection("users").document(user.uid).collection("tasks").document(selectedTask.taskId)
-                }
-            selectedTask.taskID = document.id
+            user ->
+            val document =
+            if (selectedTask.taskId == null || selectedTask.taskId.isEmpty()) {
+                //creating a new task document for specific user
+                firestore.collection("users").document(user.uid).collection("tasks").document()
+            }
+            else {
+                //updating an existing task document for specific user
+                firestore.collection("users").document(user.uid).collection("tasks").document(selectedTask.taskId)
+            }
+
+            selectedTask.taskId = document.id
             val handle = document.set(selectedTask)
             handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
             handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
