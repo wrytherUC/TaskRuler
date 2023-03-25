@@ -46,6 +46,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             viewModel.getTasks()
+            firebaseUser?.let {
+                val user = User(it.uid, "")
+                viewModel.user = user
+
+            }
             val tasks by viewModel.tasks.observeAsState(initial = emptyList())
             val spinnerTasks by viewModel.spinnerTasks.observeAsState(initial = emptyList())
 
@@ -129,7 +134,8 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
                 val user = User(it.uid, it.displayName)
-                viewModel.save(user)
+                viewModel.user = user
+                viewModel.saveUser()
             }
         }
         else {

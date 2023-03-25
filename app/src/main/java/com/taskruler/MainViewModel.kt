@@ -18,12 +18,13 @@ import kotlinx.coroutines.launch
  * Organizes DTO/DAO
  * @property taskService is using the TaskService class
  * @property MutableLiveData<List<Task>> watching changing list of tasks
+ * @property user being set from MainActivity signInResult
  */
 class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel() {
 
     var tasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
     var spinnerTasks : MutableLiveData<List<Task>> = MutableLiveData<List<Task>>()
-
+    var user : User? = null
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -36,24 +37,25 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
 
 
     private fun listenToTasks(){
-        firestore.collection("tasks").addSnapshotListener{
-            snapshot, e ->
-            if (e != null){
-                Log.w("Listen failed", e)
-                return@addSnapshotListener
-
-            }
-            snapshot?.let{
-                val allTasks = ArrayList<Task>()
-                val documents = snapshot.documents
-                documents.forEach {
-                    val task = it.toObject(Task::class.java)
-                    task?.let {
-                        allTasks.add(it)
-                    }
+        user?.let {
+            user ->
+            firestore.collection("users").document(user.uid).collection("tasks").addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w("Listen failed", e)
+                    return@addSnapshotListener
                 }
-                spinnerTasks.value = allTasks
+                snapshot?.let {
+                    val allTasks = ArrayList<Task>()
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val task = it.toObject(Task::class.java)
+                        task?.let {
+                            allTasks.add(it)
+                        }
+                    }
+                    spinnerTasks.value = allTasks
 
+                }
             }
         }
     }
@@ -74,11 +76,12 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
     /**
      * function is called in MainActivity from signInResult function
      *      part of the signIn intent functionality
-     * @param user of User type (DTO)
      */
-    fun save(user: User) {
-        val handle = firestore.collection("users").document(user.uid).set(user)
-        handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
-        handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
+    fun saveUser() {
+        user?.let {
+            val handle = firestore.collection("users").document(user!!.uid).set(user!!)
+            handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
+            handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
+        }
     }
 }
