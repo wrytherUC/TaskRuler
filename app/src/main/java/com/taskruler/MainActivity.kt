@@ -29,6 +29,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.taskruler.dto.Task
+import com.taskruler.dto.User
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -126,6 +127,9 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
         val callbackResponse = result.idpResponse
         if (result.resultCode == RESULT_OK){
             firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let {
+                val user = User(it.uid, it.displayName)
+            }
         }
         else {
             Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
