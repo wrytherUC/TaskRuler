@@ -129,6 +129,7 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
                 val user = User(it.uid, it.displayName)
+                viewModel.save(user)
             }
         }
         else {

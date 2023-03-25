@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.taskruler.dto.Task
+import com.taskruler.dto.User
 import com.taskruler.service.ITaskService
 import com.taskruler.service.TaskService
 import kotlinx.coroutines.launch
@@ -68,5 +69,16 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
             var innerTasks = taskService.getTasks()
             tasks.postValue(innerTasks)
         }
+    }
+
+    /**
+     * function is called in MainActivity from signInResult function
+     *      part of the signIn intent functionality
+     * @param user of User type (DTO)
+     */
+    fun save(user: User) {
+        val handle = firestore.collection("users").document(user.uid).set(user)
+        handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
+        handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
     }
 }
