@@ -36,7 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private var selectedTask by mutableStateOf(Task())
-    private var user: FirebaseUser? = null
+    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
 
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
@@ -125,7 +125,7 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
         val callbackResponse = result.idpResponse
         if (result.resultCode == RESULT_OK){
-            user = FirebaseAuth.getInstance().currentUser
+            firebaseUser = FirebaseAuth.getInstance().currentUser
         }
         else {
             Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
