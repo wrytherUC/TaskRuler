@@ -70,13 +70,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTask : Task = Task()) {
 
-    var activityName by remember { mutableStateOf(selectedTask.taskName) }
-    var activityStatus by remember { mutableStateOf(selectedTask.isCompleted.toString()) }
-
+    var activityName by remember(selectedTask.taskId) { mutableStateOf(selectedTask.taskName) }
+    var activityStatus by remember(selectedTask.taskId) { mutableStateOf(selectedTask.isCompleted.toString()) }
 
     Column {
         TaskSpinner(tasks = tasks)
-
 
         Button(onClick = { /*TODO*/ })
         {Text(text = "Home")}
