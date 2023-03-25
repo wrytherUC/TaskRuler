@@ -73,6 +73,24 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
         }
     }
 
+    fun saveTask() {
+        user?.let {
+            val docuement =
+                if (selectedTask.taskId == null || selectedTask.taskId.isEmpty()) {
+                    //creating a new task document for specific user
+                    firestore.collection("users").document(user.uid).collection("tasks").document()
+                }
+                else {
+                    //updating an existing task document for specific user
+                    firestore.collection("users").document(user.uid).collection("tasks").document(selectedTask.taskId)
+                }
+            selectedTask.taskID = document.id
+            val handle = document.set(selectedTask)
+            handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
+            handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
+        }
+    }
+
     /**
      * function is called in MainActivity from signInResult function
      *      part of the signIn intent functionality
