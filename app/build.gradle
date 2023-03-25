@@ -86,4 +86,20 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.0.0'
+
+    //Google Calendar API
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+
+    // to avoid conflicts in previous libraries
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    implementation('com.google.api-client:google-api-client-android:1.23.0'){
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+    // easily control permissions
+    implementation 'pub.devrel:easypermission:3.0.0'
+
 }
