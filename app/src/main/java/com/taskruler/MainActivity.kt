@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
             firebaseUser?.let {
                 val user = User(it.uid, "")
                 viewModel.user = user
-
+                viewModel.listenToTasks()
             }
             val tasks by viewModel.tasks.observeAsState(initial = emptyList())
             val spinnerTasks by viewModel.spinnerTasks.observeAsState(initial = emptyList())

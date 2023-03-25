@@ -32,11 +32,10 @@ class MainViewModel(var taskService : ITaskService = TaskService()) : ViewModel(
     init{
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        //listenToTasks()
     }
 
 
-    private fun listenToTasks(){
+    fun listenToTasks(){
         user?.let {
             user ->
             firestore.collection("users").document(user.uid).collection("tasks").addSnapshotListener { snapshot, e ->
