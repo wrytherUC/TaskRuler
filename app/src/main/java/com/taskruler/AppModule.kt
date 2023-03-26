@@ -1,7 +1,7 @@
 package com.taskruler
 
-import com.taskruler.service.ITaskService
-import com.taskruler.service.TaskService
+import com.taskruler.service.IActivityService
+import com.taskruler.service.ActivityService
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -11,5 +11,5 @@ import org.koin.dsl.module
 @JvmField
 val appModule = module {
     viewModel { MainViewModel(get()) }
-    single<ITaskService> { TaskService() }
+    single<IActivityService> { ActivityService() }
 }
