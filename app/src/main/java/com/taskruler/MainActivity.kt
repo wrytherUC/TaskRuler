@@ -54,6 +54,9 @@ fun Greeting(name: String) {
         Button(onClick = { /*TODO*/ })
         {Text(text = "Task Timed")}
 
+        Button(onClick = { /*TODO*/ })
+        {Text(text = "Save")}
+
 
         TextField(
             value = activityName,
