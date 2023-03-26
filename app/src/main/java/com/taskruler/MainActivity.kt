@@ -2,6 +2,7 @@ package com.taskruler
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -28,31 +30,41 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.taskruler.dto.Task
+import com.taskruler.dto.Activity
 import com.taskruler.dto.User
+import com.taskruler.dto.UserTask
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : ComponentActivity() {
 
-    private var selectedTask by mutableStateOf(Task())
+    /*
+    TODO
+        Switch over all task items to user tasks
+        Figure out where selectedTask needs to be and selectedUserTask needs to be
+            fewer selectedTasks used
+     */
+    private var selectedActivity: Activity? = null
+    //Might not use the below selectedTask var after update
+    private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
 
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private var inActivityName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            viewModel.getTasks()
+            viewModel.getActivities()
             firebaseUser?.let {
                 val user = User(it.uid, "")
                 viewModel.user = user
-                viewModel.listenToTasks()
+                viewModel.listenToUserTasks()
             }
-            val tasks by viewModel.tasks.observeAsState(initial = emptyList())
-            val spinnerTasks by viewModel.spinnerTasks.observeAsState(initial = emptyList())
+            val activities by viewModel.activities.observeAsState(initial = emptyList())
+            val userTasks by viewModel.userTasks.observeAsState(initial = emptyList())
 
 
             TaskRulerTheme {
@@ -62,88 +74,83 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-                    LogActivity("Android", spinnerTasks, selectedTask)
+                    UserTasksList("Android", activities, userTasks, viewModel.selectedUserTask)
                 }
             }
         }
     }
 @Composable
-fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTask : Task = Task()) {
+fun UserTasksList(
+    name: String,
+    activities: List<Activity> = ArrayList<Activity>(),
+    userTasks: List<UserTask> = ArrayList<UserTask>(),
+    selectedUserTask : UserTask = UserTask()) {
 
-    var activityName by remember(selectedTask.taskId) { mutableStateOf(selectedTask.taskName) }
-    var activityStatus by remember(selectedTask.taskId) { mutableStateOf(selectedTask.isCompleted.toString()) }
+    //need to move these over from using tasks to user tasks
+    //
+    var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
+    var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
+    var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
+    val context = LocalContext.current
 
     Column {
-        TaskSpinner(tasks = tasks)
+        TaskSpinner(userTasks = userTasks)
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Home")}
+        //Removing, will not have any other pages except for the main screen
+        //Button(onClick = { /*TODO*/ })
+        //{Text(text = "Home")}
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Task Timed")}
-
-
-        TextField(
-            value = activityName,
-            onValueChange = { activityName = it },
+        OutlinedTextField(
+            value = inTaskName,
+            onValueChange = { inTaskName = it },
             label = { Text(stringResource(R.string.activtyName)) }
         )
-
-
-        TextField(
-            value = activityStatus,
-            onValueChange = { activityStatus = it },
+        //New field for user to enter in total time duration wanted for a user created task
+        OutlinedTextField(
+            value = inTaskTotalTime,
+            onValueChange = { inTaskTotalTime = it },
+            label = { Text(stringResource(R.string.taskTotalTime)) }
+        )
+        //Needs switched to drop down
+        OutlinedTextField(
+            value = inIsCompleted,
+            onValueChange = { inIsCompleted = it },
             label = { Text(stringResource(R.string.completedStatus)) }
         )
 
-
+        Button(onClick = {
+            var userTask = UserTask().apply {
+                activityName = inActivityName
+                activityId = selectedActivity?.let {
+                    it.activityId
+                } ?: 0
+                userTaskName = inTaskName
+                userTotalTaskTime = inTaskTotalTime
+                userIsCompleted = inIsCompleted
+            }
+            viewModel.saveUserTask()
+            Toast.makeText(
+                context,
+                "$inTaskName $inIsCompleted $inTaskTotalTime",
+                Toast.LENGTH_LONG
+            ).show()
+        })
+        {Text(text = "Save Task")}
 
         Button(onClick = { /*TODO*/ })
-        {Text(text = "Save Task")}
+        {Text(text = "Task Timed")}
 
         Button(onClick = {
             signIn()
         })
         {Text(text = "Logon")}
-
-
     }
     }
-
-    private fun signIn() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build()
-        )
-        val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
-            .setAvailableProviders(providers).build()
-
-        signInLauncher.launch(signInIntent)
-    }
-
-    private val signInLauncher = registerForActivityResult (
-        FirebaseAuthUIActivityResultContract()
-    ) {
-            res -> this.signInResult(res)
-    }
-
-    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val callbackResponse = result.idpResponse
-        if (result.resultCode == RESULT_OK){
-            firebaseUser = FirebaseAuth.getInstance().currentUser
-            firebaseUser?.let {
-                val user = User(it.uid, it.displayName)
-                viewModel.user = user
-                viewModel.saveUser()
-            }
-        }
-        else {
-            Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
-        }
-    }
-
+    //Missing code compared to class/PlantDiary spinner
+    //Change made before PlantDiary PR #49
     @Composable
-    fun TaskSpinner (tasks: List<Task>){
-        var taskText by remember { mutableStateOf("Task List")}
+    fun TaskSpinner (userTasks: List<UserTask>){
+        var userTaskText by remember { mutableStateOf("Task List")}
         var expanded by remember { mutableStateOf(false)}
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
             Row(Modifier
@@ -155,14 +162,14 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Text(text = taskText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+                Text(text = userTaskText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    tasks.forEach(){
+                    userTasks.forEach(){
                         task -> DropdownMenuItem(onClick = {
                             expanded = false
-                        taskText = task.toString()
-                        selectedTask = task
+                        userTaskText = task.toString()
+                        selectedUserTask = task
                     }) {
                             Text(text = task.toString())
 
@@ -176,10 +183,10 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
     }
     //Auto Complete
     @Composable
-    fun TextFieldWithDropdownUsage(dataIn: List<Task>, label : String = "", take :Int = 3, selectedTask : Task = Task()) {
+    fun TextFieldWithDropdownUsage(dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()) {
 
-        val dropDownOptions = remember { mutableStateOf(listOf<Task>()) }
-        val textFieldValue = remember(selectedTask.taskId) { mutableStateOf(TextFieldValue(selectedTask.taskName)) }
+        val dropDownOptions = remember { mutableStateOf(listOf<Activity>()) }
+        val textFieldValue = remember(selectedUserTask.userTaskId) { mutableStateOf(TextFieldValue(selectedUserTask.activityName)) }
         val dropDownExpanded = remember { mutableStateOf(false) }
 
         fun onDropdownDismissRequest() {
@@ -213,7 +220,7 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
         setValue: (TextFieldValue) -> Unit,
         onDismissRequest: () -> Unit,
         dropDownExpanded: Boolean,
-        list: List<Task>,
+        list: List<Activity>,
         label: String = ""
     ) {
         Box(modifier) {
@@ -246,7 +253,7 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
                                 TextRange(text.toString().length)
                             )
                         )
-                        selectedTask = text
+                        selectedActivity = text
                     }) {
                         Text(text = text.toString())
                     }
@@ -255,11 +262,42 @@ fun LogActivity(name: String, tasks: List<Task> = ArrayList<Task>(), selectedTas
         }
     }
 
+    private fun signIn() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build()
+        )
+        val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
+            .setAvailableProviders(providers).build()
+
+        signInLauncher.launch(signInIntent)
+    }
+
+    private val signInLauncher = registerForActivityResult (
+        FirebaseAuthUIActivityResultContract()
+    ) {
+            res -> this.signInResult(res)
+    }
+
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val callbackResponse = result.idpResponse
+        if (result.resultCode == RESULT_OK){
+            firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let {
+                val user = User(it.uid, it.displayName)
+                viewModel.user = user
+                viewModel.saveUser()
+            }
+        }
+        else {
+            Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
+        }
+    }
+
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     TaskRulerTheme {
-        LogActivity("Android")
+        UserTasksList("Android")
     }
 }}
