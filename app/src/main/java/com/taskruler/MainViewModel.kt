@@ -29,6 +29,7 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
     var userTasks : MutableLiveData<List<UserTask>> = MutableLiveData<List<UserTask>>()
     var selectedUserTask by mutableStateOf(UserTask())
     var user : User? = null
+    internal val NEW_TASK: String = "New Task"
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -47,10 +48,9 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
                     Log.w("Listen failed", e)
                     return@addSnapshotListener
                 }
-                //Need to compare the below snapshot let block against class code
-                    //allSpecimens.add(Specimen(plantName = NEW_SPECIMEN))
                 snapshot?.let {
                     val allUserTasks = ArrayList<UserTask>()
+                    allUserTasks.add(UserTask(activityName = NEW_TASK))
                     val documents = snapshot.documents
                     documents.forEach {
                         val userTask = it.toObject(UserTask::class.java)
