@@ -7,7 +7,14 @@ import androidx.room.Entity
  * Data Transfer Object to transfer tasks and task data from Retrofit to MVM
  */
 @Entity(tableName="tasks")
-data class Task (var taskId : Int, var taskName : String, var isCompleted : Boolean) {
+data class Activity (var activityId : Int = 0,
+                     var activityName : String = "",
+                     //Might need updated to string when implement drop down box for this choice
+                     var isCompleted : Boolean = false) {
+                     //var isCompleted : String = ""
+    override fun toString(): String {
+        return "$activityName"
+    }
 }
 
 //Example

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TaskRuler</string>
     <string name="activtyName">Activity Name</string>
-    <string name="activityName2">activityName2</string>
-    <string name="activityName3">activityName3</string>
-    <string name="futureActivity">futureActivity</string>
+    <string name ="completedStatus">Completed Status</string>
+    <string name="activityName">Activity Name</string>
+    <string name="taskTotalTime">Total Time For Task</string>
 </resources>
