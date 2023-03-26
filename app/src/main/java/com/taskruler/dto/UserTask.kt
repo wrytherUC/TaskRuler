@@ -8,7 +8,7 @@ data class UserTask (var activityId: Int = 0,
                      var userTaskId : String = "",
                      var userTaskName : String = "",
                      var userIsCompleted : String = "",
-                     var userTotalTaskTime : Int = 0) {
+                     var userTotalTaskTime : String = "") {
     override fun toString(): String {
         return "$activityName"
     }
