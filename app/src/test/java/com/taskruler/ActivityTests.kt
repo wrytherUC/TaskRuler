@@ -2,8 +2,8 @@ package com.taskruler
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.taskruler.dto.Task
-import com.taskruler.service.TaskService
+import com.taskruler.dto.Activity
+import com.taskruler.service.ActivityService
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -23,22 +23,22 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
-class TaskTests {
+class ActivityTests {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    lateinit var taskService : TaskService
+    lateinit var taskService : ActivityService
 
-    val laundrytask = Task(0,"Do Laundry", isCompleted = false)
+    val laundrytask = Activity(0,"Do Laundry", isCompleted = false)
 
-    var addtasks : List<Task>? = ArrayList<Task>()
+    var addtasks : List<Activity>? = ArrayList<Activity>()
 
-    var allTasks : List<Task>? = ArrayList<Task>()
+    var allActivities : List<Activity>? = ArrayList<Activity>()
 
     lateinit var mvm: MainViewModel
 
     @MockK
-    lateinit var mockTaskService : TaskService
+    lateinit var mockTaskService : ActivityService
 
     private val mainThreadSurrogate = newSingleThreadContext("Main Thread")
     @Before
@@ -67,17 +67,17 @@ class TaskTests {
 
 
     private fun givenTaskServiceIsIntialized() {
-        taskService = TaskService()
+        taskService = ActivityService()
     }
     private suspend fun  whenTaskDataAreReadandParsed() {
-       allTasks = taskService.getTasks()
+       allActivities = taskService.getActivities()
     }
     private fun thenTheTaskCollectionShouldContainDoTheDishes() {
-        assertNotNull(allTasks)
-        assertTrue((allTasks!!.isNotEmpty()))
+        assertNotNull(allActivities)
+        assertTrue((allActivities!!.isNotEmpty()))
         var containsDoDishes = false
-        allTasks!!.forEach {
-            if(it.taskName.equals(("Do the dishes")) && it.taskId.equals(0)){
+        allActivities!!.forEach {
+            if(it.activityName.equals(("Do the dishes")) && it.activityId.equals(0)){
                 containsDoDishes = true
             }
         }
@@ -102,11 +102,11 @@ class TaskTests {
     }
 
     private fun DoLaundryIsAddedToDatabase() {
-        var addTask = ArrayList<Task>()
+        var addActivity = ArrayList<Activity>()
 
-        addTask.add(laundrytask)
+        addActivity.add(laundrytask)
 
-        addtasks = addTask
+        addtasks = addActivity
 
     }
 
@@ -138,13 +138,13 @@ class TaskTests {
     }
 
     private fun givenViewModelIsItializedwithMockData() {
-        var tasks = ArrayList<Task>()
+        var activities = ArrayList<Activity>()
         var i = 1+1
-        tasks.add(Task(0,"Do the Dishes", false))
-        tasks.add(Task(1,"Go to the store", false))
-        tasks.add(Task(2,"Mop the Kitchen", true))
+        activities.add(Activity(0,"Do the Dishes", false))
+        activities.add(Activity(1,"Go to the store", false))
+        activities.add(Activity(2,"Mop the Kitchen", true))
 
-        coEvery { mockTaskService.getTasks() } returns tasks
+        coEvery { mockTaskService.getActivities() } returns activities
 
         mvm = MainViewModel(taskService = mockTaskService)
 
@@ -155,11 +155,11 @@ class TaskTests {
     }
 
     private fun thenResultsShouldContainDoTheDishes() {
-        var allTasks : List<Task>? = ArrayList<Task>()
+        var allActivities : List<Activity>? = ArrayList<Activity>()
         val latch = CountDownLatch(1)
-        val observer = object : Observer<List<Task>> {
-            override fun onChanged(receivedTasks: List<Task>?) {
-                allTasks = receivedTasks
+        val observer = object : Observer<List<Activity>> {
+            override fun onChanged(receivedActivities: List<Activity>?) {
+                allActivities = receivedActivities
                 latch.countDown()
                 mvm.tasks.removeObserver(this)
             }
@@ -167,11 +167,11 @@ class TaskTests {
         }
         mvm.tasks.observeForever(observer)
         latch.await(10, TimeUnit.SECONDS)
-        assertNotNull(allTasks)
-        assertTrue(allTasks!!.isNotEmpty())
+        assertNotNull(allActivities)
+        assertTrue(allActivities!!.isNotEmpty())
         var containsDoDishes = false
-        allTasks!!.forEach {
-            if (it.taskName.equals(("Do the Dishes")) && it.taskId.equals(0)){
+        allActivities!!.forEach {
+            if (it.activityName.equals(("Do the Dishes")) && it.activityId.equals(0)){
                 containsDoDishes = true
                 }
         }
