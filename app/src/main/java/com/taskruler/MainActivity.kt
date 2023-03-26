@@ -286,6 +286,7 @@ fun UserTasksList(
                 val user = User(it.uid, it.displayName)
                 viewModel.user = user
                 viewModel.saveUser()
+                viewModel.listenToUserTasks()
             }
         }
         else {
