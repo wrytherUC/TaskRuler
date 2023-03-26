@@ -2,4 +2,6 @@
     <string name="app_name">TaskRuler</string>
     <string name="activtyName">Activity Name</string>
     <string name ="completedStatus">Completed Status</string>
+    <string name="activityName">Activity Name</string>
+    <string name="taskTotalTime">Total Time For Task</string>
 </resources>
