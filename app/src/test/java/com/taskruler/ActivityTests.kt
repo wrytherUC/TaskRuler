@@ -146,12 +146,12 @@ class ActivityTests {
 
         coEvery { mockTaskService.getActivities() } returns activities
 
-        mvm = MainViewModel(taskService = mockTaskService)
+        mvm = MainViewModel(activityService = mockTaskService)
 
     }
 
     private fun whenGetTasksMethodIsInvoked() {
-        mvm.getTasks()
+        mvm.getActivities()
     }
 
     private fun thenResultsShouldContainDoTheDishes() {
@@ -161,11 +161,11 @@ class ActivityTests {
             override fun onChanged(receivedActivities: List<Activity>?) {
                 allActivities = receivedActivities
                 latch.countDown()
-                mvm.tasks.removeObserver(this)
+                mvm.activities.removeObserver(this)
             }
 
         }
-        mvm.tasks.observeForever(observer)
+        mvm.activities.observeForever(observer)
         latch.await(10, TimeUnit.SECONDS)
         assertNotNull(allActivities)
         assertTrue(allActivities!!.isNotEmpty())
