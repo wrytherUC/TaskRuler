@@ -119,7 +119,7 @@ fun UserTasksList(
         )
 
         Button(onClick = {
-            var userTask = UserTask().apply {
+            selectedUserTask.apply {
                 activityName = inActivityName
                 activityId = selectedActivity?.let {
                     it.activityId
@@ -166,12 +166,22 @@ fun UserTasksList(
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     userTasks.forEach(){
-                        task -> DropdownMenuItem(onClick = {
+                        userTask -> DropdownMenuItem(onClick = {
                             expanded = false
-                        userTaskText = task.toString()
-                        selectedUserTask = task
+                        //Need to review this new code below
+                        //See video https://youtu.be/6dZakQh1KQI
+                        if (userTask.activityName == viewModel.NEW_TASK ) {
+                            userTaskText = ""
+                            userTask.activityName = ""
+                        }
+                        else {
+                            userTaskText = userTask.toString()
+                            selectedActivity = Activity()
+                            inActivityName = userTask.activityName
+                        }
+                        viewModel.selectedUserTask = userTask
                     }) {
-                            Text(text = task.toString())
+                            Text(text = userTask.toString())
 
                     }
                     }
