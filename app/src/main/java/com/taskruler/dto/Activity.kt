@@ -4,7 +4,7 @@ import androidx.room.Entity
 
 
 /**
- * Data Transfer Object to transfer tasks and task data from Retrofit to MVM
+ * Data Transfer Object to transfer activities and activity data from Retrofit to MVM
  */
 @Entity(tableName="tasks")
 data class Activity (var activityId : Int = 0,
