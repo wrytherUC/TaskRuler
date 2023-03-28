@@ -39,12 +39,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    /*
-    TODO
-        Switch over all task items to user tasks
-        Figure out where selectedTask needs to be and selectedUserTask needs to be
-            fewer selectedTasks used
-     */
     private var selectedActivity: Activity? = null
     //Might not use the below selectedTask var after update
     private var selectedUserTask by mutableStateOf(UserTask())
@@ -79,6 +73,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 @Composable
 fun UserTasksList(
     name: String,
@@ -86,8 +81,6 @@ fun UserTasksList(
     userTasks: List<UserTask> = ArrayList<UserTask>(),
     selectedUserTask : UserTask = UserTask()) {
 
-    //need to move these over from using tasks to user tasks
-    //
     var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
     var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
@@ -146,6 +139,7 @@ fun UserTasksList(
         {Text(text = "Logon")}
     }
     }
+    
     //Missing code compared to class/PlantDiary spinner
     //Change made before PlantDiary PR #49
     @Composable
@@ -190,6 +184,7 @@ fun UserTasksList(
         }
 
     }
+
     //Auto Complete
     @Composable
     fun TextFieldWithDropdownUsage(dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()) {
@@ -271,6 +266,9 @@ fun UserTasksList(
         }
     }
 
+    /**
+     * Sign in function for user authentication
+     */
     private fun signIn() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),

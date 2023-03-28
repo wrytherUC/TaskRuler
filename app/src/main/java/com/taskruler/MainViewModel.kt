@@ -33,13 +33,19 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
 
     private lateinit var firestore : FirebaseFirestore
 
-
+    /**
+     * TODO
+     *      This init block is causing an issue with MVM unit test. Need to resolve
+     */
     init{
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
-
+    /**
+     * Function listens for any changes to any changes with user's Firebase DB task documents
+     * Called by main activity
+     */
     fun listenToUserTasks(){
         user?.let {
             user ->
@@ -65,8 +71,6 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
         }
     }
 
-
-
     /**
      * @return activities from ActivityService
      * Adds/posts tasks to the MutableLiveData<List<Activities>>
@@ -79,10 +83,11 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
     }
 
     /**
-     *
+     * Function will save user input to a Firebase DB task document
+     * If new, will create a new document
+     * If not new, will update the document using existing userTaskId
+     * Called by main activity
      */
-    //Want to change this from activity stuff to user tasks
-    //Might need to double check this against module 7
     fun saveUserTask() {
         user?.let {
             user ->
