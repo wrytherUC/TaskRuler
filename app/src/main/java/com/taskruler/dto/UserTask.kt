@@ -2,6 +2,9 @@ package com.taskruler.dto
 
 import androidx.room.Entity
 
+/**
+ * Data Transfer Object to create from user input
+ */
 @Entity(tableName="UserTasks")
 data class UserTask (var activityId: Int = 0,
                      var activityName: String = "",
