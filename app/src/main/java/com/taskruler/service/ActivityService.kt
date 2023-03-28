@@ -24,8 +24,8 @@ interface IActivityService {
 class ActivityService : IActivityService {
 
     /**
-     * @returns a list of Tasks that the RetroClientInstance retrieves from the online source
-     * @await for the retrofitClientInstance to retrieve the data from online and turn the JSON into tasks
+     * @returns a list of Activities that the RetroClientInstance retrieves from the online source
+     * @await for the retrofitClientInstance to retrieve the data from online and turn the JSON into activities
      */
    override suspend fun getActivities() : List<Activity>? {
     return withContext(Dispatchers.IO){
