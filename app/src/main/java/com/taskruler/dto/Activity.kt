@@ -13,7 +13,7 @@ data class Activity (var activityId : Int = 0,
                      var isCompleted : Boolean = false) {
                      //var isCompleted : String = ""
     override fun toString(): String {
-        return "$activityName"
+        return activityName
     }
 }
 
