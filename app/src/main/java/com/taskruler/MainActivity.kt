@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
 
-    private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: MainViewModel by viewModel()
     private var inActivityName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,8 +77,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun UserTasksList(
     name: String,
-    activities: List<Activity> = ArrayList<Activity>(),
-    userTasks: List<UserTask> = ArrayList<UserTask>(),
+    activities: List<Activity> = ArrayList(),
+    userTasks: List<UserTask> = ArrayList(),
     selectedUserTask : UserTask = UserTask()) {
 
     var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
@@ -114,9 +114,7 @@ fun UserTasksList(
         Button(onClick = {
             selectedUserTask.apply {
                 activityName = inActivityName
-                activityId = selectedActivity?.let {
-                    it.activityId
-                } ?: 0
+                activityId = selectedActivity?.activityId ?: 0
                 userTaskName = inTaskName
                 userTotalTaskTime = inTaskTotalTime
                 userIsCompleted = inIsCompleted
@@ -159,7 +157,7 @@ fun UserTasksList(
                 Text(text = userTaskText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    userTasks.forEach(){
+                    userTasks.forEach{
                         userTask -> DropdownMenuItem(onClick = {
                             expanded = false
                         //Need to review this new code below
