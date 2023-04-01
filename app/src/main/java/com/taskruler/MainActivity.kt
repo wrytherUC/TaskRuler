@@ -114,7 +114,9 @@ fun UserTasksList(
         Button(onClick = {
             selectedUserTask.apply {
                 activityName = inActivityName
-                activityId = selectedActivity?.activityId ?: 0
+                activityId = selectedActivity?.let {
+                    it.activityId
+                } ?: 0
                 userTaskName = inTaskName
                 userTotalTaskTime = inTaskTotalTime
                 userIsCompleted = inIsCompleted
