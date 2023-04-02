@@ -23,13 +23,13 @@ class ActivityTests {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    lateinit var activityService : ActivityService
+    private lateinit var activityService : ActivityService
 
-    val laundryActivity = Activity(0,"Do Laundry", isCompleted = false)
+    private val laundryActivity = Activity(0,"Do Laundry", isCompleted = false)
 
-    var addActivities : List<Activity>? = ArrayList()
+    private var addActivities : List<Activity>? = ArrayList()
 
-    var allActivities : List<Activity>? = ArrayList()
+    private var allActivities : List<Activity>? = ArrayList()
 
     lateinit var mvm: MainViewModel
 
