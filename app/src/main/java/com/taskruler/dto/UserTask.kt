@@ -16,11 +16,3 @@ data class UserTask (var activityId: Int = 0,
         return "Activity: $activityName User Task: $userTaskName IsCompleted: $userIsCompleted"
     }
 }
-
-//Example
-//@Entity(tableName="plants")
-//data class Plant(@SerializedName("genus") var genus : String, var species : String, var common : String, var cultivar:String ="", @PrimaryKey var id : Int = 0 ) {
-//    override fun toString(): String {
-//        return common
-//    }
-//}
