@@ -60,7 +60,7 @@ fun Greeting(name: String) {
         TextField(
             value = activityName,
             onValueChange = { activityName = it },
-            label = { Text(stringResource(R.string.activtyName)) }
+            label = { Text(stringResource(R.string.activityName)) }
         )
 
 
