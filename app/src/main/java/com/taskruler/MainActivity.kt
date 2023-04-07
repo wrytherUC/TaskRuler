@@ -188,7 +188,7 @@ fun UserTasksList(
         // click displays/shows the DatePickerDialog
         Button(onClick = {
             mDatePickerDialog.show()
-        }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58)) ) {
+        }, ) {
             Text(text = "Open Date Picker", color = Color.White)
         }
         // Adding a space of 100dp height
