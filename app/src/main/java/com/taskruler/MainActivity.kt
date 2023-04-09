@@ -5,6 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
@@ -17,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -93,7 +96,22 @@ fun UserTasksList(
         //Removing, will not have any other pages except for the main screen
         //Button(onClick = { /*TODO*/ })
         //{Text(text = "Home")}
-        TextFieldWithDropdownUsage(dataIn = activities, inActivityName,3,selectedUserTask)
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+
+                TextFieldWithDropdownUsage(dataIn = activities, inActivityName, 3, selectedUserTask)
+
+
+                }
+            }
 
         //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
@@ -104,34 +122,78 @@ fun UserTasksList(
         //Needs switched to drop down
         TrueFalseSpinner()
 
-        Button(onClick = {
-            selectedUserTask.apply {
-                activityName = inActivityName
-                activityId = selectedActivity?.let {
-                    it.activityId
-                } ?: 0
-                userTaskName = inTaskName
-                userTotalTaskTime = inTaskTotalTime
-                userIsCompleted = inIsCompleted
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(onClick = {
+                    selectedUserTask.apply {
+                        activityName = inActivityName
+                        activityId = selectedActivity?.let {
+                            it.activityId
+                        } ?: 0
+                        userTaskName = inTaskName
+                        userTotalTaskTime = inTaskTotalTime
+                        userIsCompleted = inIsCompleted
+                    }
+                    viewModel.saveUserTask()
+                    Toast.makeText(
+                        context,
+                        "$inTaskName $inIsCompleted $inTaskTotalTime",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                })
+                {
+                    Text(text = stringResource(R.string.SaveTask))
+                }
             }
-            viewModel.saveUserTask()
-            Toast.makeText(
-                context,
-                "$inTaskName $inIsCompleted $inTaskTotalTime",
-                Toast.LENGTH_LONG
-            ).show()
-        })
-        {Text(text = "Save Task")}
+        }
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Task Timed")}
 
-        Button(onClick = {
-            signIn()
-        })
-        {Text(text = "Logon")}
+
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(onClick = { /*TODO*/ })
+
+                { Text(text = "Task Timed") }
+            }
+        }
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(
+                    onClick = {
+                        signIn()
+                    }
+
+                )
+                { Text(text = "Logon") }
+            }
+        }
     }
-    }
+}
 
 
     @Composable
@@ -151,7 +213,10 @@ fun UserTasksList(
         {
             Row(
                 modifier = Modifier
-                    .clickable{ expanded = !expanded},
+                    .width(250.dp)
+                    .padding(top = 25.dp)
+                    .clickable { expanded = !expanded }
+                    .border(BorderStroke(1.dp, Color.Black)),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
             ){
@@ -267,7 +332,7 @@ fun UserTasksList(
         Box(modifier) {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth()
+
                     .onFocusChanged { focusState ->
                         if (!focusState.isFocused)
                             onDismissRequest()
