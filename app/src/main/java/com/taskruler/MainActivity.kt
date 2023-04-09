@@ -44,6 +44,7 @@ class MainActivity : ComponentActivity() {
     private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
+    private var selectedCompleted: String = ""
 
     private val viewModel: MainViewModel by viewModel()
     private var inActivityName: String = ""
@@ -92,12 +93,8 @@ fun UserTasksList(
         //Removing, will not have any other pages except for the main screen
         //Button(onClick = { /*TODO*/ })
         //{Text(text = "Home")}
+        TextFieldWithDropdownUsage(dataIn = activities, inActivityName,3,selectedUserTask)
 
-        OutlinedTextField(
-            value = inTaskName,
-            onValueChange = { inTaskName = it },
-            label = { Text(stringResource(R.string.activtyName)) }
-        )
         //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
             value = inTaskTotalTime,
@@ -105,11 +102,7 @@ fun UserTasksList(
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
         //Needs switched to drop down
-        OutlinedTextField(
-            value = inIsCompleted,
-            onValueChange = { inIsCompleted = it },
-            label = { Text(stringResource(R.string.completedStatus)) }
-        )
+        TrueFalseSpinner()
 
         Button(onClick = {
             selectedUserTask.apply {
@@ -139,7 +132,51 @@ fun UserTasksList(
         {Text(text = "Logon")}
     }
     }
-    
+
+
+    @Composable
+    fun TrueFalseSpinner(){
+        val trueFalseOptions = listOf(
+            getString(R.string.False),
+            getString(R.string.True)
+        )
+        var trueFalseText by remember { mutableStateOf(getString(R.string.completedStatus))}
+        var expanded by remember { mutableStateOf(false)}
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        )
+        {
+            Row(
+                modifier = Modifier
+                    .clickable{ expanded = !expanded},
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = trueFalseText)
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    stringResource(androidx.compose.ui.R.string.dropdown_menu)
+                )
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    trueFalseOptions.forEach { trueFalseOption ->
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                            trueFalseText = trueFalseOption
+                        }){
+                            Text(text = trueFalseOption)
+                            selectedCompleted = trueFalseOption
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+    }
     //Missing code compared to class/PlantDiary spinner
     //Change made before PlantDiary PR #49
     @Composable
