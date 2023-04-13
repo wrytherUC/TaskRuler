@@ -36,10 +36,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 // Package and imports for Calendar
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -47,12 +47,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.taskruler.utilities.ReminderWorker
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
@@ -107,17 +109,21 @@ fun UserTasksList(
 
     // Declaring integer values
     // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
+    var chosenYear: Int
+    var chosenMonth: Int
+    var chosenDay: Int
+
+    var chosenHour: Int
+    var chosenMin: Int
+
 
     // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
 
     // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+    chosenYear = mCalendar.get(Calendar.YEAR)
+    chosenMonth = mCalendar.get(Calendar.MONTH)
+    chosenDay = mCalendar.get(Calendar.DAY_OF_MONTH)
 
     mCalendar.time = Date()
 
@@ -131,9 +137,22 @@ fun UserTasksList(
         context,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
+        }, chosenYear, chosenMonth, chosenDay
     )
 
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+
+    // Value for storing time as a string
+    val mTime = remember { mutableStateOf("") }
+
+    // Creating a TimePicker dialog
+    val mTimePickerDialog = TimePickerDialog(
+        context,
+        {_, mHour : Int, mMinute: Int ->
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, false
+    )
 
     Column {
         TaskSpinner(userTasks = userTasks)
@@ -201,8 +220,6 @@ fun UserTasksList(
             }
         }
 
-
-
         Box(
 
         ) {
@@ -230,7 +247,12 @@ fun UserTasksList(
         // Displaying the mDate value in the Text
         Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
 
+        Button(onClick = {
+            mTimePickerDialog
+        },)
+        { Text(text = "Task Time")}
         }
+
         Box(
 
         ) {
@@ -462,8 +484,20 @@ fun UserTasksList(
         }
     }
 
+    private fun createWorkRequest(message: String,timeDelayInSeconds: Long  ) {
+        val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+            .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
+            .setInputData(workDataOf(
+                "title" to "Reminder",
+                "message" to message,
+            )
+            )
+            .build()
 
-@Preview(showBackground = true)
+        WorkManager.getInstance(this).enqueue(myWorkRequest)
+    }
+
+    @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     TaskRulerTheme {
