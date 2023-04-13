@@ -3,6 +3,8 @@ package com.taskruler
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 
 
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -60,6 +63,7 @@ class MainActivity : ComponentActivity() {
     private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
+    private var selectedCompleted: String = ""
 
     private val viewModel: MainViewModel by viewModel()
     private var inActivityName: String = ""
@@ -138,12 +142,23 @@ fun UserTasksList(
         //Removing, will not have any other pages except for the main screen
         //Button(onClick = { /*TODO*/ })
         //{Text(text = "Home")}
+        Box(
 
-        OutlinedTextField(
-            value = inTaskName,
-            onValueChange = { inTaskName = it },
-            label = { Text(stringResource(R.string.activtyName)) }
-        )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+
+                TextFieldWithDropdownUsage(dataIn = activities, inActivityName, 3, selectedUserTask)
+
+
+                }
+            }
+
         //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
             value = inTaskTotalTime,
@@ -151,38 +166,58 @@ fun UserTasksList(
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
         //Needs switched to drop down
-        OutlinedTextField(
-            value = inIsCompleted,
-            onValueChange = { inIsCompleted = it },
-            label = { Text(stringResource(R.string.completedStatus)) }
-        )
+        TrueFalseSpinner()
 
-        Button(onClick = {
-            selectedUserTask.apply {
-                activityName = inActivityName
-                activityId = selectedActivity?.let {
-                    it.activityId
-                } ?: 0
-                userTaskName = inTaskName
-                userTotalTaskTime = inTaskTotalTime
-                userIsCompleted = inIsCompleted
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(onClick = {
+                    selectedUserTask.apply {
+                        activityName = inActivityName
+                        activityId = selectedActivity?.let {
+                            it.activityId
+                        } ?: 0
+                        userTaskName = inTaskName
+                        userTotalTaskTime = inTaskTotalTime
+                        userIsCompleted = inIsCompleted
+                    }
+                    viewModel.saveUserTask()
+                    Toast.makeText(
+                        context,
+                        "$inTaskName $inIsCompleted $inTaskTotalTime",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                })
+                {
+                    Text(text = stringResource(R.string.SaveTask))
+                }
             }
-            viewModel.saveUserTask()
-            Toast.makeText(
-                context,
-                "$inTaskName $inIsCompleted $inTaskTotalTime",
-                Toast.LENGTH_LONG
-            ).show()
-        })
-        {Text(text = "Save Task")}
+        }
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Task Timed")}
 
-        Button(onClick = {
-            signIn()
-        })
-        {Text(text = "Logon")}
+
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(onClick = { /*TODO*/ })
+
+                { Text(text = "Task Timed") }
+            }
 
         // Creating a button that on
         // click displays/shows the DatePickerDialog
@@ -196,9 +231,76 @@ fun UserTasksList(
         // Displaying the mDate value in the Text
         Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
 
+        }
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(
+                    onClick = {
+                        signIn()
+                    }
+
+                )
+                { Text(text = "Logon") }
+            }
+        }
     }
+}
+
+
+    @Composable
+    fun TrueFalseSpinner(){
+        val trueFalseOptions = listOf(
+            getString(R.string.False),
+            getString(R.string.True)
+        )
+        var trueFalseText by remember { mutableStateOf(getString(R.string.completedStatus))}
+        var expanded by remember { mutableStateOf(false)}
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        )
+        {
+            Row(
+                modifier = Modifier
+                    .width(250.dp)
+                    .padding(top = 25.dp)
+                    .clickable { expanded = !expanded }
+                    .border(BorderStroke(1.dp, Color.Black)),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = trueFalseText)
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    stringResource(androidx.compose.ui.R.string.dropdown_menu)
+                )
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    trueFalseOptions.forEach { trueFalseOption ->
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                            trueFalseText = trueFalseOption
+                        }){
+                            Text(text = trueFalseOption)
+                            selectedCompleted = trueFalseOption
+                        }
+
+                    }
+
+                }
+            }
+
+        }
     }
-    
     //Missing code compared to class/PlantDiary spinner
     //Change made before PlantDiary PR #49
     @Composable
@@ -289,7 +391,7 @@ fun UserTasksList(
         Box(modifier) {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth()
+
                     .onFocusChanged { focusState ->
                         if (!focusState.isFocused)
                             onDismissRequest()
