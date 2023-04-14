@@ -113,12 +113,11 @@ fun UserTasksList(
     var chosenMonth: Int
     var chosenDay: Int
 
-    var chosenHour: Int
-    var chosenMin: Int
-
-
     // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
+
+    var chosenHour = mCalendar[Calendar.HOUR_OF_DAY]
+    var chosenMin = mCalendar[Calendar.MINUTE]
 
     // Fetching current year, month and day
     chosenYear = mCalendar.get(Calendar.YEAR)
@@ -151,7 +150,7 @@ fun UserTasksList(
         context,
         {_, mHour : Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
-        }, mHour, mMinute, false
+        }, chosenHour, chosenMin, false
     )
 
     Column {
@@ -171,7 +170,8 @@ fun UserTasksList(
 
             ) {
 
-                TextFieldWithDropdownUsage(dataIn = activities, inActivityName, 3, selectedUserTask)
+                TextFieldWithDropdownUsage(dataIn = activities, "Activity Name", 3, selectedUserTask)
+                //dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()
 
 
                 }
@@ -185,6 +185,48 @@ fun UserTasksList(
         )
         //Needs switched to drop down
         TrueFalseSpinner()
+
+        Box(
+
+        ) {
+        Column(
+            //modifier = Modifier
+            //    .fillMaxWidth()
+             //   .padding(top = 10.dp),
+            //horizontalArrangement = Arrangement.Center
+        ) {
+
+            Button(onClick = { /*TODO*/ })
+
+            { Text(text = "Task Timer") }
+
+
+            // Creating a button that on
+            // click displays/shows the DatePickerDialog
+            Button(
+                onClick = {
+                    mDatePickerDialog.show()
+                },
+            ) {
+                Text(text = "Open Date Picker", color = Color.White)
+            }
+            // Adding a space of 100dp height
+            Spacer(modifier = Modifier.size(100.dp))
+            // Displaying the mDate value in the Text
+            Text(
+                text = "Selected Date: ${mDate.value}",
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Button(
+                onClick = {
+                    mTimePickerDialog.show()
+                },
+            )
+            { Text(text = "Task Start Time") }
+        }
+    }
 
         Box(
 
@@ -217,40 +259,21 @@ fun UserTasksList(
                 {
                     Text(text = stringResource(R.string.SaveTask))
                 }
+
+                Button(onClick = {
+                    val userSelectedDateTime =Calendar.getInstance()
+                    userSelectedDateTime.set(chosenYear, chosenMonth, chosenDay, chosenHour , chosenMin)
+
+                    val todayDateTime = Calendar.getInstance()
+
+                    val delayInSeconds = (userSelectedDateTime.timeInMillis/1000L) - (todayDateTime.timeInMillis/1000L)
+
+                    createWorkRequest(inActivityName, delayInSeconds)
+
+                    Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
+                })
+                {Text(text = "Create Notification")}
             }
-        }
-
-        Box(
-
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-
-                Button(onClick = { /*TODO*/ })
-
-                { Text(text = "Task Timed") }
-            }
-
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
-        Button(onClick = {
-            mDatePickerDialog.show()
-        }, ) {
-            Text(text = "Open Date Picker", color = Color.White)
-        }
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.size(100.dp))
-        // Displaying the mDate value in the Text
-        Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
-
-        Button(onClick = {
-            mTimePickerDialog
-        },)
-        { Text(text = "Task Time")}
         }
 
         Box(
