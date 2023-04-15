@@ -109,9 +109,13 @@ fun UserTasksList(
 
     // Declaring integer values
     // for year, month and day
-    var chosenYear: Int
-    var chosenMonth: Int
-    var chosenDay: Int
+    val mYear: Int
+    var mMonth: Int
+    val mDay: Int
+
+    var chosenYear: Int = 0
+    var chosenMonth: Int = 0
+    var chosenDay: Int = 0
 
     // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
@@ -120,9 +124,9 @@ fun UserTasksList(
     var chosenMin = mCalendar[Calendar.MINUTE]
 
     // Fetching current year, month and day
-    chosenYear = mCalendar.get(Calendar.YEAR)
-    chosenMonth = mCalendar.get(Calendar.MONTH)
-    chosenDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
 
     mCalendar.time = Date()
 
@@ -136,7 +140,7 @@ fun UserTasksList(
         context,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, chosenYear, chosenMonth, chosenDay
+        }, mYear, mMonth, mDay
     )
 
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
@@ -150,7 +154,7 @@ fun UserTasksList(
         context,
         {_, mHour : Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
-        }, chosenHour, chosenMin, false
+        }, mHour, mMinute, false
     )
 
     Column {
@@ -171,8 +175,6 @@ fun UserTasksList(
             ) {
 
                 TextFieldWithDropdownUsage(dataIn = activities, "Activity Name", 3, selectedUserTask)
-                //dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()
-
 
                 }
             }
@@ -261,14 +263,24 @@ fun UserTasksList(
                 }
 
                 Button(onClick = {
-                    val userSelectedDateTime =Calendar.getInstance()
+                    val userSelectedDateTime = Calendar.getInstance()
+
+                    chosenDay = mDate.value.split("/")[0].toInt()
+                    chosenMonth = mDate.value.split("/")[1].toInt() - 1
+                    chosenYear = mDate.value.split("/")[2].toInt()
+
+                    chosenHour = mTime.value.split(":")[0].toInt()
+                    chosenMin = mTime.value.split(":")[1].toInt()
+
                     userSelectedDateTime.set(chosenYear, chosenMonth, chosenDay, chosenHour , chosenMin)
 
                     val todayDateTime = Calendar.getInstance()
 
+                    val delay = (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
+
                     val delayInSeconds = (userSelectedDateTime.timeInMillis/1000L) - (todayDateTime.timeInMillis/1000L)
 
-                    createWorkRequest(inActivityName, delayInSeconds)
+                    createWorkRequest(inTaskName, delayInSeconds)
 
                     Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
                 })
