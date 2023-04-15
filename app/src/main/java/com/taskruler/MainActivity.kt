@@ -47,7 +47,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -60,8 +59,6 @@ import kotlin.collections.ArrayList
 class MainActivity : ComponentActivity() {
 
     private var selectedActivity: Activity? = null
-    //Might not use the below selectedTask var after update
-    private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
     private var selectedCompleted: String = ""
@@ -102,26 +99,26 @@ fun UserTasksList(
     userTasks: List<UserTask> = ArrayList(),
     selectedUserTask : UserTask = UserTask()) {
 
-    var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
-    var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
+    val inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
+    val inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
 
     // Declaring integer values
     // for year, month and day
     val mYear: Int
-    var mMonth: Int
+    val mMonth: Int
     val mDay: Int
 
-    var chosenYear: Int = 0
-    var chosenMonth: Int = 0
-    var chosenDay: Int = 0
+    var chosenYear: Int
+    var chosenMonth: Int
+    var chosenDay: Int
 
     // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
 
-    var chosenHour = mCalendar[Calendar.HOUR_OF_DAY]
-    var chosenMin = mCalendar[Calendar.MINUTE]
+    var chosenHour: Int
+    var chosenMin: Int
 
     // Fetching current year, month and day
     mYear = mCalendar.get(Calendar.YEAR)
@@ -163,9 +160,7 @@ fun UserTasksList(
         //Removing, will not have any other pages except for the main screen
         //Button(onClick = { /*TODO*/ })
         //{Text(text = "Home")}
-        Box(
-
-        ) {
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,15 +183,8 @@ fun UserTasksList(
         //Needs switched to drop down
         TrueFalseSpinner()
 
-        Box(
-
-        ) {
-        Column(
-            //modifier = Modifier
-            //    .fillMaxWidth()
-             //   .padding(top = 10.dp),
-            //horizontalArrangement = Arrangement.Center
-        ) {
+        Box {
+        Column {
 
             Button(onClick = { /*TODO*/ })
 
@@ -219,9 +207,7 @@ fun UserTasksList(
         }
     }
 
-        Box(
-
-        ) {
+        Box {
             Row(
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -265,7 +251,7 @@ fun UserTasksList(
 
                     val todayDateTime = Calendar.getInstance()
 
-                    val delay = (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
+                    (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
 
                     val delayInSeconds = (userSelectedDateTime.timeInMillis/1000L) - (todayDateTime.timeInMillis/1000L)
 
@@ -277,9 +263,7 @@ fun UserTasksList(
             }
         }
 
-        Box(
-
-        ) {
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
