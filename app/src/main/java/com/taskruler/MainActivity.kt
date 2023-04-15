@@ -202,24 +202,13 @@ fun UserTasksList(
 
             { Text(text = "Task Timer") }
 
-
-            // Creating a button that on
-            // click displays/shows the DatePickerDialog
             Button(
                 onClick = {
                     mDatePickerDialog.show()
                 },
             ) {
-                Text(text = "Open Date Picker", color = Color.White)
+                Text(text = "Task Start Date", color = Color.White)
             }
-            // Adding a space of 100dp height
-            Spacer(modifier = Modifier.size(100.dp))
-            // Displaying the mDate value in the Text
-            Text(
-                text = "Selected Date: ${mDate.value}",
-                fontSize = 30.sp,
-                textAlign = TextAlign.Center
-            )
 
             Button(
                 onClick = {
@@ -284,7 +273,7 @@ fun UserTasksList(
 
                     Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
                 })
-                {Text(text = "Create Notification")}
+                {Text(text = "Create Task Notification")}
             }
         }
 
