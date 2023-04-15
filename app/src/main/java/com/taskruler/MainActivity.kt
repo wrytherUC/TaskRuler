@@ -6,13 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-
-
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-
-
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -32,9 +27,6 @@ import com.taskruler.dto.User
 import com.taskruler.dto.UserTask
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-// Package and imports for Calendar
-
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -43,7 +35,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -104,8 +95,6 @@ fun UserTasksList(
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
 
-    // Declaring integer values
-    // for year, month and day
     val mYear: Int
     val mMonth: Int
     val mDay: Int
@@ -157,9 +146,6 @@ fun UserTasksList(
     Column {
         TaskSpinner(userTasks = userTasks)
 
-        //Removing, will not have any other pages except for the main screen
-        //Button(onClick = { /*TODO*/ })
-        //{Text(text = "Home")}
         Box {
             Row(
                 modifier = Modifier
@@ -174,13 +160,12 @@ fun UserTasksList(
                 }
             }
 
-        //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
             value = inTaskTotalTime,
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-        //Needs switched to drop down
+
         TrueFalseSpinner()
 
         Box {
@@ -283,7 +268,6 @@ fun UserTasksList(
     }
 }
 
-
     @Composable
     fun TrueFalseSpinner(){
         val trueFalseOptions = listOf(
@@ -375,7 +359,9 @@ fun UserTasksList(
 
     }
 
-    //Auto Complete
+    /**
+     * Auto Complete
+     */
     @Composable
     fun TextFieldWithDropdownUsage(dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()) {
 
