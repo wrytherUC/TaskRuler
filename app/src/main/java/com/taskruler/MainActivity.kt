@@ -6,13 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-
-
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-
-
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -32,34 +27,29 @@ import com.taskruler.dto.User
 import com.taskruler.dto.UserTask
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-// Package and imports for Calendar
-
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.taskruler.utilities.ReminderWorker
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
 
     private var selectedActivity: Activity? = null
-    //Might not use the below selectedTask var after update
-    private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var inTaskName: String = ""
     private var selectedCompleted: String = ""
@@ -100,19 +90,24 @@ fun UserTasksList(
     userTasks: List<UserTask> = ArrayList(),
     selectedUserTask : UserTask = UserTask()) {
 
-    var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
-    var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
+    val inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
+    val inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
 
-    // Declaring integer values
-    // for year, month and day
     val mYear: Int
     val mMonth: Int
     val mDay: Int
 
+    var chosenYear: Int
+    var chosenMonth: Int
+    var chosenDay: Int
+
     // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
+
+    var chosenHour: Int
+    var chosenMin: Int
 
     // Fetching current year, month and day
     mYear = mCalendar.get(Calendar.YEAR)
@@ -134,16 +129,24 @@ fun UserTasksList(
         }, mYear, mMonth, mDay
     )
 
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+
+    // Value for storing time as a string
+    val mTime = remember { mutableStateOf("") }
+
+    // Creating a TimePicker dialog
+    val mTimePickerDialog = TimePickerDialog(
+        context,
+        {_, mHour : Int, mMinute: Int ->
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, false
+    )
 
     Column {
         TaskSpinner(userTasks = userTasks)
 
-        //Removing, will not have any other pages except for the main screen
-        //Button(onClick = { /*TODO*/ })
-        //{Text(text = "Home")}
-        Box(
-
-        ) {
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -152,24 +155,44 @@ fun UserTasksList(
 
             ) {
 
-                TextFieldWithDropdownUsage(dataIn = activities, inActivityName, 3, selectedUserTask)
-
+                TextFieldWithDropdownUsage(dataIn = activities, "Activity Name", 3, selectedUserTask)
 
                 }
             }
 
-        //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
             value = inTaskTotalTime,
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-        //Needs switched to drop down
+
         TrueFalseSpinner()
 
-        Box(
+        Box {
+        Column {
 
-        ) {
+            Button(onClick = { /*TODO*/ })
+
+            { Text(text = "Task Timer") }
+
+            Button(
+                onClick = {
+                    mDatePickerDialog.show()
+                },
+            ) {
+                Text(text = "Task Start Date", color = Color.White)
+            }
+
+            Button(
+                onClick = {
+                    mTimePickerDialog.show()
+                },
+            )
+            { Text(text = "Task Start Time") }
+        }
+    }
+
+        Box {
             Row(
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -198,42 +221,34 @@ fun UserTasksList(
                 {
                     Text(text = stringResource(R.string.SaveTask))
                 }
+
+                Button(onClick = {
+                    val userSelectedDateTime = Calendar.getInstance()
+
+                    chosenDay = mDate.value.split("/")[0].toInt()
+                    chosenMonth = mDate.value.split("/")[1].toInt() - 1
+                    chosenYear = mDate.value.split("/")[2].toInt()
+
+                    chosenHour = mTime.value.split(":")[0].toInt()
+                    chosenMin = mTime.value.split(":")[1].toInt()
+
+                    userSelectedDateTime.set(chosenYear, chosenMonth, chosenDay, chosenHour , chosenMin)
+
+                    val todayDateTime = Calendar.getInstance()
+
+                    (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
+
+                    val delayInSeconds = (userSelectedDateTime.timeInMillis/1000L) - (todayDateTime.timeInMillis/1000L)
+
+                    createWorkRequest(inTaskName, delayInSeconds)
+
+                    Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
+                })
+                {Text(text = "Create Task Notification")}
             }
         }
 
-
-
-        Box(
-
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-
-                Button(onClick = { /*TODO*/ })
-
-                { Text(text = "Task Timed") }
-            }
-
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
-        Button(onClick = {
-            mDatePickerDialog.show()
-        }, ) {
-            Text(text = "Open Date Picker", color = Color.White)
-        }
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.size(100.dp))
-        // Displaying the mDate value in the Text
-        Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
-
-        }
-        Box(
-
-        ) {
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -252,7 +267,6 @@ fun UserTasksList(
         }
     }
 }
-
 
     @Composable
     fun TrueFalseSpinner(){
@@ -345,7 +359,9 @@ fun UserTasksList(
 
     }
 
-    //Auto Complete
+    /**
+     * Auto Complete
+     */
     @Composable
     fun TextFieldWithDropdownUsage(dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()) {
 
@@ -462,8 +478,20 @@ fun UserTasksList(
         }
     }
 
+    private fun createWorkRequest(message: String,timeDelayInSeconds: Long  ) {
+        val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+            .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
+            .setInputData(workDataOf(
+                "title" to "Reminder",
+                "message" to message,
+            )
+            )
+            .build()
 
-@Preview(showBackground = true)
+        WorkManager.getInstance(this).enqueue(myWorkRequest)
+    }
+
+    @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     TaskRulerTheme {
