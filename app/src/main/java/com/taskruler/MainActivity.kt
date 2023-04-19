@@ -29,6 +29,7 @@ import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.activity.ComponentActivity
@@ -94,6 +95,7 @@ fun UserTasksList(
     val inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
+    val localContext = LocalContext.current
 
     val mYear: Int
     val mMonth: Int
@@ -171,7 +173,9 @@ fun UserTasksList(
         Box {
         Column {
 
-            Button(onClick = { /*TODO*/ })
+            Button(onClick = {
+                localContext.startActivity(Intent(localContext, TaskTimerActivity::class.java))
+            })
 
             { Text(text = "Task Timer") }
 
