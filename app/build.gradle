@@ -40,7 +40,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion '1.4.0'
     }
     packagingOptions {
         resources {
@@ -93,4 +93,7 @@ dependencies {
 
     //For notifications
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+
+    //For Timer, might not need view binding
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0"
 }
