@@ -13,25 +13,14 @@ class TimerMainViewModel : ViewModel() {
     private var _firstRun: Boolean = true
     var timeRemaining: Long = 0
 
-    //region Properties
     private var countDownTimer: CountDownTimer? = null
-    //endregion
-
-    //region States
-    //private val _time = MutableLiveData<String>()
-    //val time: LiveData<String> get() = _time
-
     var time : MutableLiveData<String> = MutableLiveData<String>()
-
-    //private val _progress = MutableLiveData<Float>()
-    //val progress: LiveData<Float> get() = _progress
 
     var globalProgress : MutableLiveData<Float> = MutableLiveData<Float>()
 
     private val _isPlaying = MutableLiveData(false)
     val isPlaying: LiveData<Boolean> = _isPlaying
 
-    //region Public methods
     fun handleCountDownTimer() {
         if (isPlaying.value == true) {
             pauseTimer()
@@ -42,9 +31,7 @@ class TimerMainViewModel : ViewModel() {
             resumeTimer()
         }
     }
-    //endregion
 
-    //region Private methods
     private fun pauseTimer() {
         countDownTimer?.cancel()
         handleTimerValues(false, time.value!!, globalProgress.value!!)
@@ -89,6 +76,4 @@ class TimerMainViewModel : ViewModel() {
         time.postValue(text)
         globalProgress.postValue(progress)
     }
-    //endregion
-
 }
