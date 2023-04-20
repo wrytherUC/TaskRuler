@@ -32,9 +32,8 @@ fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.c
     val time by viewModel.time.observeAsState(TIME_COUNTDOWN.formatTime())
     val progress by viewModel.progress.observeAsState(1.00F)
     val isPlaying by viewModel.isPlaying.observeAsState(false)
-    //val celebrate by viewModel.celebrate.observeAsState(false)
 
-    CountDownView(time = time, progress = progress, isPlaying = isPlaying, taskTime = taskTimeDisplay /*celebrate = celebrate*/) {
+    CountDownView(time = time, progress = progress, isPlaying = isPlaying, taskTime = taskTimeDisplay) {
         viewModel.handleCountDownTimer()
     }
 
@@ -46,17 +45,12 @@ fun CountDownView(
     progress: Float,
     isPlaying: Boolean,
     taskTime: String,
-    //celebrate: Boolean,
     optionSelected: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        /*if (celebrate){
-            ShowCelebration()
-        }*/
 
         Text(
             text = "Timer",

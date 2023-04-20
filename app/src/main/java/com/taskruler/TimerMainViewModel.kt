@@ -24,21 +24,10 @@ class TimerMainViewModel : ViewModel() {
     private val _isPlaying = MutableLiveData(false)
     val isPlaying: LiveData<Boolean> = _isPlaying
 
-    //hold data for celebrate view as boolean
-
-    //private
-    private val _celebrate = SingleLiveEvent<Boolean>()
-
-    //accessed publicly
-    val celebrate : LiveData<Boolean> get() =  _celebrate
-
-    //endregion
-
     //region Public methods
     fun handleCountDownTimer() {
         if (isPlaying.value == true) {
             pauseTimer()
-            _celebrate.postValue(false)
         } else {
             startTimer()
         }
@@ -48,7 +37,7 @@ class TimerMainViewModel : ViewModel() {
     //region Private methods
     private fun pauseTimer() {
         countDownTimer?.cancel()
-        handleTimerValues(false, TimerUtility.TIME_COUNTDOWN.formatTime(), 1.0F, false)
+        handleTimerValues(false, TimerUtility.TIME_COUNTDOWN.formatTime(), 1.0F)
 
     }
 
@@ -59,22 +48,19 @@ class TimerMainViewModel : ViewModel() {
 
             override fun onTick(millisRemaining: Long) {
                 val progressValue = millisRemaining.toFloat() / TimerUtility.TIME_COUNTDOWN
-                handleTimerValues(true, millisRemaining.formatTime(), progressValue, false)
-                _celebrate.postValue(false)
+                handleTimerValues(true, millisRemaining.formatTime(), progressValue)
             }
 
             override fun onFinish() {
                 pauseTimer()
-                _celebrate.postValue(true)
             }
         }.start()
     }
 
-    private fun handleTimerValues(isPlaying: Boolean, text: String, progress: Float, celebrate: Boolean) {
+    private fun handleTimerValues(isPlaying: Boolean, text: String, progress: Float) {
         _isPlaying.value = isPlaying
         _time.value = text
         _progress.value = progress
-        _celebrate.postValue(celebrate)
     }
     //endregion
 
