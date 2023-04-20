@@ -4,22 +4,30 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.taskruler.dto.Activity
 import com.taskruler.helper.SingleLiveEvent
-import com.taskruler.utilities.TimerUtility
 import com.taskruler.utilities.TimerUtility.formatTime
+import com.taskruler.view.TIME_COUNTDOWN
 
 class TimerMainViewModel : ViewModel() {
+
+    private var _firstRun: Boolean = true
+    var timeRemaining: Long = 0
 
     //region Properties
     private var countDownTimer: CountDownTimer? = null
     //endregion
 
     //region States
-    private val _time = MutableLiveData(TimerUtility.TIME_COUNTDOWN.formatTime())
-    val time: LiveData<String> = _time
+    //private val _time = MutableLiveData<String>()
+    //val time: LiveData<String> get() = _time
 
-    private val _progress = MutableLiveData(1.00F)
-    val progress: LiveData<Float> = _progress
+    var time : MutableLiveData<String> = MutableLiveData<String>()
+
+    //private val _progress = MutableLiveData<Float>()
+    //val progress: LiveData<Float> get() = _progress
+
+    var globalProgress : MutableLiveData<Float> = MutableLiveData<Float>()
 
     private val _isPlaying = MutableLiveData(false)
     val isPlaying: LiveData<Boolean> = _isPlaying
@@ -28,8 +36,11 @@ class TimerMainViewModel : ViewModel() {
     fun handleCountDownTimer() {
         if (isPlaying.value == true) {
             pauseTimer()
-        } else {
+        } else if (_firstRun == true) {
             startTimer()
+        }
+        else {
+            resumeTimer()
         }
     }
     //endregion
@@ -37,17 +48,34 @@ class TimerMainViewModel : ViewModel() {
     //region Private methods
     private fun pauseTimer() {
         countDownTimer?.cancel()
-        handleTimerValues(false, TimerUtility.TIME_COUNTDOWN.formatTime(), 1.0F)
-
+        handleTimerValues(false, time.value!!, globalProgress.value!!)
     }
 
-    private fun startTimer() {
-
+    fun startTimer() {
+        _firstRun = false
         _isPlaying.value = true
-        countDownTimer = object : CountDownTimer(TimerUtility.TIME_COUNTDOWN, 1000) {
+        countDownTimer = object : CountDownTimer(TIME_COUNTDOWN, 1000) {
 
             override fun onTick(millisRemaining: Long) {
-                val progressValue = millisRemaining.toFloat() / TimerUtility.TIME_COUNTDOWN
+                val progressValue = millisRemaining.toFloat() / TIME_COUNTDOWN
+                timeRemaining = millisRemaining
+                handleTimerValues(true, millisRemaining.formatTime(), progressValue)
+            }
+
+            override fun onFinish() {
+                pauseTimer()
+            }
+        }.start()
+    }
+
+    private fun resumeTimer() {
+
+        _isPlaying.value = true
+        countDownTimer = object : CountDownTimer(timeRemaining, 1000) {
+
+            override fun onTick(millisRemaining: Long) {
+                val progressValue = millisRemaining.toFloat() / TIME_COUNTDOWN
+                timeRemaining = millisRemaining
                 handleTimerValues(true, millisRemaining.formatTime(), progressValue)
             }
 
@@ -59,8 +87,8 @@ class TimerMainViewModel : ViewModel() {
 
     private fun handleTimerValues(isPlaying: Boolean, text: String, progress: Float) {
         _isPlaying.value = isPlaying
-        _time.value = text
-        _progress.value = progress
+        time.postValue(text)
+        globalProgress.postValue(progress)
     }
     //endregion
 
