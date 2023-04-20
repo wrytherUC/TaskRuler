@@ -21,18 +21,18 @@ import com.taskruler.utilities.TimerUtility
 import com.taskruler.utilities.TimerUtility.formatTime
 import com.taskruler.view.components.CountDownButton
 import com.taskruler.view.components.CountDownIndicator
-//import com.taskruler.view.components.ShowCelebration
 import com.taskruler.TimerMainViewModel
 
 @Composable
-fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(), taskTime: Long) {
 
+    TimerUtility.TIME_COUNTDOWN = taskTime
     val time by viewModel.time.observeAsState(TimerUtility.TIME_COUNTDOWN.formatTime())
     val progress by viewModel.progress.observeAsState(1.00F)
     val isPlaying by viewModel.isPlaying.observeAsState(false)
     //val celebrate by viewModel.celebrate.observeAsState(false)
 
-    CountDownView(time = time, progress = progress, isPlaying = isPlaying /*celebrate = celebrate*/) {
+    CountDownView(time = time, progress = progress, isPlaying = isPlaying, taskTime = taskTime /*celebrate = celebrate*/) {
         viewModel.handleCountDownTimer()
     }
 
@@ -43,6 +43,7 @@ fun CountDownView(
     time: String,
     progress: Float,
     isPlaying: Boolean,
+    taskTime: Long,
     //celebrate: Boolean,
     optionSelected: () -> Unit
 ) {

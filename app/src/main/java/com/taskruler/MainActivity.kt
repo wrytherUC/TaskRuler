@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.google.android.gms.tasks.Task
 import com.taskruler.utilities.ReminderWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -174,7 +175,14 @@ fun UserTasksList(
         Column {
 
             Button(onClick = {
-                localContext.startActivity(Intent(localContext, TaskTimerActivity::class.java))
+                //localContext.startActivity(Intent(localContext, TaskTimerActivity::class.java))
+                //https://stackoverflow.com/questions/45157567/how-to-pass-the-values-from-activity-to-another-activity
+
+                //val intent = Intent(localContext, TaskTimerActivity::class.java)
+                val intent = Intent(this@MainActivity, TaskTimerActivity::class.java)
+                intent.putExtra("Time", "$inTaskTotalTime")
+
+                startActivity(intent)
             })
 
             { Text(text = "Task Timer") }
