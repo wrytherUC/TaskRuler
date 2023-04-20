@@ -1,5 +1,6 @@
 package com.taskruler.view
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,20 +18,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.taskruler.R
+import com.taskruler.TimerMainViewModel
 import com.taskruler.utilities.TimerUtility
 import com.taskruler.utilities.TimerUtility.formatTime
 import com.taskruler.view.components.CountDownButton
 import com.taskruler.view.components.CountDownIndicator
-import com.taskruler.TimerMainViewModel
-import com.taskruler.utilities.TimerUtility.TIME_COUNTDOWN
+//import com.taskruler.utilities.TimerUtility.TIME_COUNTDOWN
+
+var TIME_COUNTDOWN: Long = 0
 
 @Composable
 fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(), taskTime: Long) {
 
     TIME_COUNTDOWN = taskTime
-    val taskTimeDisplay = TIME_COUNTDOWN.formatTime()
+    val taskTimeDisplay = taskTime.formatTime()
     val time by viewModel.time.observeAsState(TIME_COUNTDOWN.formatTime())
-    val progress by viewModel.progress.observeAsState(1.00F)
+    val progress by viewModel.globalProgress.observeAsState(1.00F)
     val isPlaying by viewModel.isPlaying.observeAsState(false)
 
     CountDownView(time = time, progress = progress, isPlaying = isPlaying, taskTime = taskTimeDisplay) {
