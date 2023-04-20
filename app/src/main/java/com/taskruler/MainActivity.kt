@@ -36,6 +36,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 // Package and imports for Calendar
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.activity.ComponentActivity
@@ -50,6 +52,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.google.android.gms.tasks.Task
+import com.taskruler.utilities.ReminderWorker
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.*
@@ -104,6 +111,7 @@ fun UserTasksList(
     var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
+    val localContext = LocalContext.current
 
     // Declaring integer values
     // for year, month and day
@@ -213,9 +221,14 @@ fun UserTasksList(
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                Button(onClick = { /*TODO*/ })
+                Button(onClick = {                 
+                val intent = Intent(this@MainActivity, TaskTimerActivity::class.java)
+                intent.putExtra("Time", "$inTaskTotalTime")
 
-                { Text(text = "Task Timed") }
+                startActivity(intent)
+ })
+
+                { Text(text = "Task Timer") }
             }
         }
 

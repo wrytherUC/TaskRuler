@@ -11,5 +11,6 @@ import org.koin.dsl.module
 @JvmField
 val appModule = module {
     viewModel { MainViewModel(get()) }
+    viewModel { TimerMainViewModel() }
     single<IActivityService> { ActivityService() }
 }
