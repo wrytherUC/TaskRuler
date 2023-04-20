@@ -19,11 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.taskruler.R
 import com.taskruler.TimerMainViewModel
-import com.taskruler.utilities.TimerUtility
 import com.taskruler.utilities.TimerUtility.formatTime
 import com.taskruler.view.components.CountDownButton
 import com.taskruler.view.components.CountDownIndicator
-//import com.taskruler.utilities.TimerUtility.TIME_COUNTDOWN
 
 var TIME_COUNTDOWN: Long = 0
 
