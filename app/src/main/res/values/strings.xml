@@ -8,4 +8,8 @@
     <string name="True">True</string>
     <string name="SaveTask">SaveTask</string>
     <string name="openDataPicker">Open Date Picker</string>
+    <string name="TaskList">Task List</string>
+    <string name="new_activity">New activity</string>
+    <string name="taskProgressDescription">Task progress Description</string>
+    <string name="activity_name">Activity Name</string>
 </resources>

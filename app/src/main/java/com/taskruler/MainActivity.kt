@@ -196,7 +196,7 @@ fun UserTasksList(
                     viewModel.saveUserTask()
                     Toast.makeText(
                         context,
-                        "$inTaskName $inTaskTotalTime",
+                        "$inActivityName  in  $inTaskTotalTime",
                         Toast.LENGTH_LONG
                     ).show()
 

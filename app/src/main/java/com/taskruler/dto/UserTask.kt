@@ -10,10 +10,10 @@ data class UserTask (var activityId: Int = 0,
                      var activityName: String = "",
                      var userTaskId : String = "",
                      var userTaskName : String = "",
-                     var userIsCompleted : String = "",
+                     var userProgress : String = "",
                      var userTotalTaskTime : String = "") {
     override fun toString(): String {
-        return "Activity: $activityName User Task: $userTaskName IsCompleted: $userIsCompleted"
+        return "Activity: $activityName "
     }
 }
 
