@@ -96,36 +96,25 @@ fun UserTasksList(
     var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
-    val localContext = LocalContext.current
 
     var chosenYear: Int
     var chosenMonth: Int
     var chosenDay: Int
     var chosenHour: Int
     var chosenMin: Int
-
-    // Declaring integer values
-    // for year, month and day
     val mYear: Int
     val mMonth: Int
     val mDay: Int
-
-    // Initializing a Calendar
     val mCalendar = Calendar.getInstance()
 
-    // Fetching current year, month and day
     mYear = mCalendar.get(Calendar.YEAR)
     mMonth = mCalendar.get(Calendar.MONTH)
     mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
 
     mCalendar.time = Date()
 
-    // Declaring a string value to
-    // store date in string format
     val mDate = remember { mutableStateOf("") }
 
-    // Declaring DatePickerDialog and setting
-    // initial values as current values (present year, month and day)
     val mDatePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
@@ -136,10 +125,8 @@ fun UserTasksList(
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
 
-    // Value for storing time as a string
     val mTime = remember { mutableStateOf("") }
 
-    // Creating a TimePicker dialog
     val mTimePickerDialog = TimePickerDialog(
         context,
         {_, mHour : Int, mMinute: Int ->
@@ -150,9 +137,6 @@ fun UserTasksList(
     Column {
         TaskSpinner(userTasks = userTasks)
 
-        //Removing, will not have any other pages except for the main screen
-        //Button(onClick = { /*TODO*/ })
-        //{Text(text = "Home")}
         Box(
         ) {
             Row(
@@ -168,13 +152,11 @@ fun UserTasksList(
             }
         }
 
-        //New field for user to enter in total time duration wanted for a user created task
         OutlinedTextField(
             value = inTaskTotalTime,
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-        //Needs switched to drop down
         TrueFalseSpinner()
 
         Box(
@@ -241,8 +223,6 @@ fun UserTasksList(
             )
             {
 
-                // Creating a button that on
-                // click displays/shows the DatePickerDialog
                 Button(
                     onClick = {
                         mDatePickerDialog.show()
@@ -534,8 +514,7 @@ fun UserTasksList(
         WorkManager.getInstance(this).enqueue(myWorkRequest)
     }
 
-
-    @Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     TaskRulerTheme {
