@@ -211,7 +211,7 @@ fun UserTasksList(
 
                 Button(onClick = {                 
                 val intent = Intent(this@MainActivity, TaskTimerActivity::class.java)
-                intent.putExtra("Time", "$inTaskTotalTime")
+                intent.putExtra("Time", "${inTaskTotalTime.trim()}")
 
                 startActivity(intent)
                 })
