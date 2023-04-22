@@ -31,7 +31,7 @@ class ActivityService : IActivityService {
     return withContext(Dispatchers.IO){
         val service = RetrofitClientInstance.retrofitInstance?.create(IActivityDAO::class.java)
         val activities = async {service?.getAllActivities()}
-        var results = activities.await()?.awaitResponse()?.body()
+        val results = activities.await()?.awaitResponse()?.body()
         return@withContext results!!
     }
     }
