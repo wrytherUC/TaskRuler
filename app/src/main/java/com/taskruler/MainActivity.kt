@@ -123,24 +123,10 @@ fun UserTasksList(
 
     val mDate = remember { mutableStateOf("") }
 
-    val mDatePickerDialog = DatePickerDialog(
-        context,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
-        }, mYear, mMonth, mDay
-    )
-
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
 
     val mTime = remember { mutableStateOf("") }
-
-    val mTimePickerDialog = TimePickerDialog(
-        context,
-        {_, mHour : Int, mMinute: Int ->
-            mTime.value = "$mHour:$mMinute"
-        }, mHour, mMinute, false
-    )
 
     val mDateAndTimePicker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
         TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, mHour, mMinute ->
