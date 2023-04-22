@@ -186,6 +186,13 @@ fun UserTasksList(
                     inTaskName = ""
                     inTaskTotalTime = ""
                     inTaskProgress = ""
+
+                    Toast.makeText(
+                        context,
+                        "Task $inActivityName has been deleted",
+                        Toast.LENGTH_LONG
+                    ).show()
+
                 })
                 {
                     Text(text = stringResource(R.string.deleteTask))
