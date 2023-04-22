@@ -1,6 +1,7 @@
 package com.taskruler
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -105,6 +106,17 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
             val handle = document.set(selectedUserTask)
             handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
             handle.addOnFailureListener { Log.e("Firebase", "Document save failure $it") }
+        }
+    }
+
+    fun deleteUserTask() {
+        user?.let {
+            user ->
+            val document =
+                firestore.collection("users").document(user.uid).collection("tasks").document(selectedUserTask.userTaskId)
+            val handle = document.delete()
+            handle.addOnSuccessListener { Log.d("Firebase", "Document Deleted") }
+            handle.addOnFailureListener { Log.e("Firebase", "Document deletion failure $it") }
         }
     }
 

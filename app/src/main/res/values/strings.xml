@@ -17,4 +17,5 @@
     <string name="notificationsAvailable">Notifications available</string>
     <string name="notificationsUnavailable">Notifications Unavailable</string>
     <string name="taskTimer">Task Timer</string>
+    <string name="deleteTask">Delete Task</string>
 </resources>

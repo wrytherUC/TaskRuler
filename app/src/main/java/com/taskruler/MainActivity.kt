@@ -181,6 +181,15 @@ fun UserTasksList(
                 {
                     Text(text = stringResource(R.string.SaveTask))
                 }
+                Button(onClick = {
+                    viewModel.deleteUserTask()
+                    inTaskName = ""
+                    inTaskTotalTime = ""
+                    inTaskProgress = ""
+                })
+                {
+                    Text(text = stringResource(R.string.deleteTask))
+                }
             }
         }
 
