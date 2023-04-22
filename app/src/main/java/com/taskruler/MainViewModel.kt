@@ -108,6 +108,10 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
         }
     }
 
+    /**
+     * Delete the selected user task/Firebase document from specific user
+     * Will also log based on success or failure
+     */
     fun deleteUserTask() {
         user?.let {
             user ->

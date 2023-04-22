@@ -467,6 +467,12 @@ fun UserTasksList(
         }
     }
 
+    /**
+     * createWorkRequest will set up a notification for the selected user task
+     * @message Notification message
+     * @title Notification title, top of the notification
+     * @timeDelayInSeconds Long type that will set up when the notification triggers
+     */
     private fun createWorkRequest(message: String, title: String, timeDelayInSeconds: Long  ) {
         val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
             .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
