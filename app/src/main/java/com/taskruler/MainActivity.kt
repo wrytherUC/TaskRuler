@@ -77,6 +77,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Main composable function for the TaskRuler application
+     */
     @Composable
 fun UserTasksList(
     name: String,
@@ -306,7 +309,9 @@ fun UserTasksList(
 }
 
 
-    // Top Spinner
+    /**
+     * Drop down field where user can see listed tasks
+     */
     @Composable
     fun TaskSpinner (userTasks: List<UserTask>){
         var userTaskText by remember { mutableStateOf("Task List")}
@@ -347,7 +352,9 @@ fun UserTasksList(
         }
     }
 
-    //Auto Complete
+    /**
+     * Used for auto complete feature
+     */
     @Composable
     fun TextFieldWithDropdownUsage(dataIn: List<Activity>, label : String = "", take :Int = 3, selectedUserTask : UserTask = UserTask()) {
 
@@ -448,6 +455,9 @@ fun UserTasksList(
             res -> this.signInResult(res)
     }
 
+    /**
+     * Saves user log in to view model for use with Firebase
+     */
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
         val callbackResponse = result.idpResponse
         if (result.resultCode == RESULT_OK){
