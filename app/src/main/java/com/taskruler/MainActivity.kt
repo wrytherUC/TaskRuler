@@ -1,27 +1,17 @@
 package com.taskruler
 
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-
-import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
@@ -35,16 +25,33 @@ import com.taskruler.dto.User
 import com.taskruler.dto.UserTask
 import com.taskruler.ui.theme.TaskRulerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.taskruler.utilities.ReminderWorker
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : ComponentActivity() {
 
     private var selectedActivity: Activity? = null
-    //Might not use the below selectedTask var after update
-    private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private var inTaskName: String = ""
-
     private val viewModel: MainViewModel by viewModel()
     private var inActivityName: String = ""
 
@@ -60,7 +67,6 @@ class MainActivity : ComponentActivity() {
             val activities by viewModel.activities.observeAsState(initial = emptyList())
             val userTasks by viewModel.userTasks.observeAsState(initial = emptyList())
 
-
             TaskRulerTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -74,6 +80,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private val requestSinglePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            isGranted ->
+        if (isGranted) {
+            Toast.makeText(this, getString(R.string.notificationsAvailable), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, getString(R.string.notificationsUnavailable), Toast.LENGTH_LONG).show()
+        }
+    }
+
 @Composable
 fun UserTasksList(
     name: String,
@@ -82,64 +97,209 @@ fun UserTasksList(
     selectedUserTask : UserTask = UserTask()) {
 
     var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
-    var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
+    var inTaskProgress by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userProgress) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
+
+    var isEnabled by remember { mutableStateOf(false)}
+
+    var chosenYear: Int
+    var chosenMonth: Int
+    var chosenDay: Int
+    var chosenHour: Int
+    var chosenMin: Int
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
+    val mCalendar = Calendar.getInstance()
+
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+
+    mCalendar.time = Date()
+
+    val mDate = remember { mutableStateOf("") }
+
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+
+    val mTime = remember { mutableStateOf("") }
+
+    val mDateAndTimePicker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
+        TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, mHour, mMinute ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, false).show()
+    }, mYear, mMonth, mDay)
+
 
     Column {
         TaskSpinner(userTasks = userTasks)
 
-        //Removing, will not have any other pages except for the main screen
-        //Button(onClick = { /*TODO*/ })
-        //{Text(text = "Home")}
+        Box(
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
 
-        OutlinedTextField(
-            value = inTaskName,
-            onValueChange = { inTaskName = it },
-            label = { Text(stringResource(R.string.activtyName)) }
-        )
-        //New field for user to enter in total time duration wanted for a user created task
+            ) {
+
+                TextFieldWithDropdownUsage(dataIn = activities, stringResource(R.string.activity_name), 3, selectedUserTask)
+
+            }
+        }
+
         OutlinedTextField(
             value = inTaskTotalTime,
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-        //Needs switched to drop down
+       
         OutlinedTextField(
-            value = inIsCompleted,
-            onValueChange = { inIsCompleted = it },
-            label = { Text(stringResource(R.string.completedStatus)) }
-        )
+            value = inTaskProgress,
+            onValueChange = {inTaskProgress = it},
+            label = {Text(stringResource(R.string.taskProgressDescription))})
+               
+        Box(
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
 
-        Button(onClick = {
-            selectedUserTask.apply {
-                activityName = inActivityName
-                activityId = selectedActivity?.let {
-                    it.activityId
-                } ?: 0
-                userTaskName = inTaskName
-                userTotalTaskTime = inTaskTotalTime
-                userIsCompleted = inIsCompleted
+                Button(onClick = {
+                    selectedUserTask.apply {
+                        activityName = inActivityName
+                        activityId = selectedActivity?.let {
+                            it.activityId
+                        } ?: 0
+                        userTaskName = inTaskName
+                        userTotalTaskTime = inTaskTotalTime
+                        userProgress = inTaskProgress
+                    }
+                    viewModel.saveUserTask()
+                    Toast.makeText(
+                        context,
+                        "$inActivityName  in  $inTaskTotalTime",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                })
+                {
+                    Text(text = stringResource(R.string.SaveTask))
+                }
             }
-            viewModel.saveUserTask()
-            Toast.makeText(
-                context,
-                "$inTaskName $inIsCompleted $inTaskTotalTime",
-                Toast.LENGTH_LONG
-            ).show()
-        })
-        {Text(text = "Save Task")}
+        }
 
-        Button(onClick = { /*TODO*/ })
-        {Text(text = "Task Timed")}
+        Box(
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
 
-        Button(onClick = {
-            signIn()
-        })
-        {Text(text = "Logon")}
+                Button(onClick = {                 
+                val intent = Intent(this@MainActivity, TaskTimerActivity::class.java)
+                intent.putExtra("Time", inTaskTotalTime.trim())
+
+                startActivity(intent)
+                })
+
+                { Text(text = stringResource(R.string.taskTimer)) }
+            }
+        }
+
+        Box()
+        {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalArrangement = Arrangement.Center
+
+            )
+            {
+
+                Button(
+                    modifier = Modifier
+                        .padding(end = 10.dp),
+                    onClick = {
+                        mDateAndTimePicker.show()
+                        if (mDate.value != null) {
+                            isEnabled = true
+                        }
+                    },
+                ) {
+                    Text(text = stringResource(R.string.openDataPicker), color = Color.White)
+                }
+            }
+        }
+
+        Box() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(enabled = isEnabled,
+                        onClick = {
+                    val userSelectedDateTime = Calendar.getInstance()
+
+                    chosenDay = mDate.value.split("/")[0].toInt()
+                    chosenMonth = mDate.value.split("/")[1].toInt() - 1
+                    chosenYear = mDate.value.split("/")[2].toInt()
+
+                    chosenHour = mTime.value.split(":")[0].toInt()
+                    chosenMin = mTime.value.split(":")[1].toInt()
+
+                    userSelectedDateTime.set(chosenYear, chosenMonth, chosenDay, chosenHour , chosenMin)
+
+                    val todayDateTime = Calendar.getInstance()
+
+                    (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
+
+                    val delayInSeconds =
+                        (userSelectedDateTime.timeInMillis / 1000L) - (todayDateTime.timeInMillis / 1000L)
+
+                    createWorkRequest(inTaskName, inTaskName, delayInSeconds)
+
+                    Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
+
+                })
+                { Text(text = stringResource(R.string.createTaskNotification)) }
+            }
+        }
+
+        Box(
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(
+                    onClick = {
+                        signIn()
+                    }
+                )
+                { Text(text = "Log in") }
+            }
+        }
     }
-    }
-    
+}
+
     //Missing code compared to class/PlantDiary spinner
     //Change made before PlantDiary PR #49
     @Composable
@@ -177,12 +337,11 @@ fun UserTasksList(
                     }) {
                             Text(text = userTask.toString())
 
-                    }
+                        }
                     }
                 }
             }
         }
-
     }
 
     //Auto Complete
@@ -198,7 +357,7 @@ fun UserTasksList(
         }
 
         fun onValueChanged(value: TextFieldValue) {
-            inTaskName = value.text
+            inActivityName = value.text
             dropDownExpanded.value = true
             textFieldValue.value = value
             dropDownOptions.value = dataIn.filter {
@@ -230,7 +389,7 @@ fun UserTasksList(
         Box(modifier) {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth()
+
                     .onFocusChanged { focusState ->
                         if (!focusState.isFocused)
                             onDismissRequest()
@@ -302,6 +461,20 @@ fun UserTasksList(
         }
     }
 
+    fun hasNotificationPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+
+    private fun createWorkRequest(message: String, title: String, timeDelayInSeconds: Long  ) {
+        val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+            .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
+            .setInputData(workDataOf(
+                "title" to title,
+                "message" to message,
+            )
+            )
+            .build()
+
+        WorkManager.getInstance(this).enqueue(myWorkRequest)
+    }
 
 @Preview(showBackground = true)
 @Composable
