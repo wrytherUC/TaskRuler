@@ -25,6 +25,11 @@ import com.taskruler.view.components.CountDownIndicator
 
 var TIME_COUNTDOWN: Long = 0
 
+/**
+ * Main composable function for the timer activity
+ * Sets up the UI and calls the TimerMainViewModel
+ * Called by TaskTimerActivity
+ */
 @Composable
 fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(), taskTime: Long) {
 
