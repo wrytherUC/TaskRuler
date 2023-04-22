@@ -7,7 +7,7 @@
     <string name="False">False</string>
     <string name="True">True</string>
     <string name="SaveTask">SaveTask</string>
-    <string name="openDataPicker">Task Notification Date</string>
-    <string name="taskNotificationStartTime">Task Notification Start Time</string>
+    <string name="openDataPicker">Notification Date</string>
+    <string name="taskNotificationStartTime">Notification Time</string>
     <string name="createTaskNotification">Create Task Notification</string>
 </resources>
