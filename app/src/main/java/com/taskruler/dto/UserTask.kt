@@ -9,7 +9,6 @@ import androidx.room.Entity
 data class UserTask (var activityId: Int = 0,
                      var activityName: String = "",
                      var userTaskId : String = "",
-                     var userTaskName : String = "",
                      var userProgress : String = "",
                      var userTotalTaskTime : String = "") {
     override fun toString(): String {
