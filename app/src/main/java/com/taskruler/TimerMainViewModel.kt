@@ -8,6 +8,11 @@ import com.taskruler.helper.SingleLiveEvent
 import com.taskruler.utilities.TimerUtility.formatTime
 import com.taskruler.view.TIME_COUNTDOWN
 
+/**
+ * This Main View Model will keep track of
+ *  total time, total time remaining, if its the first time running, and start/stopping the timer
+ * Called by CountDownScreen
+ */
 class TimerMainViewModel : ViewModel() {
 
     private var _firstRun: Boolean = true
