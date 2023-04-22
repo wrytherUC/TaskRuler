@@ -77,7 +77,7 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
      */
     fun getActivities() {
         viewModelScope.launch {
-            var innerActivities = activityService.getActivities()
+            val innerActivities = activityService.getActivities()
             activities.postValue(innerActivities)
         }
     }
@@ -92,7 +92,7 @@ class MainViewModel(var activityService : IActivityService = ActivityService()) 
         user?.let {
             user ->
             val document =
-            if (selectedUserTask.userTaskId == null || selectedUserTask.userTaskId.isEmpty()) {
+                if (selectedUserTask.userTaskId.isEmpty()) {
                 //creating a new task document for specific user
                 firestore.collection("users").document(user.uid).collection("tasks").document()
             }

@@ -27,9 +27,9 @@ class ActivityTests {
 
     val laundryActivity = Activity(0,"Do Laundry", isCompleted = false)
 
-    var addActivities : List<Activity>? = ArrayList<Activity>()
+    var addActivities : List<Activity>? = ArrayList()
 
-    var allActivities : List<Activity>? = ArrayList<Activity>()
+    var allActivities : List<Activity>? = ArrayList()
 
     lateinit var mvm: MainViewModel
 
@@ -51,14 +51,14 @@ class ActivityTests {
     //Test File
     @Test
     fun `Given when task data is available when I search for taskId of 1 should return Do the Dishes` () = runTest {
-        givenTaskServiceIsIntialized()
+        givenTaskServiceIsInitialized()
         whenTaskDataAreReadandParsed()
         thenTheTaskCollectionShouldContainDoTheDishes()
     }
 
 
 
-    private fun givenTaskServiceIsIntialized() {
+    private fun givenTaskServiceIsInitialized() {
         activityService = ActivityService()
     }
     private suspend fun  whenTaskDataAreReadandParsed() {
@@ -111,9 +111,7 @@ class ActivityTests {
     private fun deleteTask() {
         var removeTask = addActivities
 
-        if (removeTask != null) {
-            removeTask.drop(0)
-        }
+        removeTask?.drop(0)
 
         addActivities = removeTask
 
