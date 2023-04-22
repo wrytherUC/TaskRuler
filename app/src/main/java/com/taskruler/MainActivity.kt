@@ -3,8 +3,6 @@ package com.taskruler
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -30,9 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
-import android.widget.DatePicker
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -211,7 +207,7 @@ fun UserTasksList(
 
                 Button(onClick = {                 
                 val intent = Intent(this@MainActivity, TaskTimerActivity::class.java)
-                intent.putExtra("Time", "${inTaskTotalTime.trim()}")
+                intent.putExtra("Time", inTaskTotalTime.trim())
 
                 startActivity(intent)
                 })
@@ -271,7 +267,7 @@ fun UserTasksList(
 
                     (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
 
-                    var delayInSeconds =
+                    val delayInSeconds =
                         (userSelectedDateTime.timeInMillis / 1000L) - (todayDateTime.timeInMillis / 1000L)
 
                     createWorkRequest(inTaskName, inTaskName, delayInSeconds)
