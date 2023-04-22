@@ -214,7 +214,7 @@ fun UserTasksList(
                 startActivity(intent)
                 })
 
-                { Text(text = "Task Timer") }
+                { Text(text = stringResource(R.string.taskTimer)) }
             }
         }
 

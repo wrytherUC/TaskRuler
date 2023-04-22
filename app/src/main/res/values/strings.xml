@@ -16,4 +16,5 @@
     <string name="activity_name">Activity Name</string>
     <string name="notificationsAvailable">Notifications available</string>
     <string name="notificationsUnavailable">Notifications Unavailable</string>
+    <string name="taskTimer">Task Timer</string>
 </resources>
