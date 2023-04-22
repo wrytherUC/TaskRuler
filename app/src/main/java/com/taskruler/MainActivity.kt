@@ -84,7 +84,7 @@ fun UserTasksList(
     userTasks: List<UserTask> = ArrayList(),
     selectedUserTask : UserTask = UserTask()) {
 
-    var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
+    var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.activityName) }
     var inTaskProgress by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userProgress) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
@@ -166,7 +166,6 @@ fun UserTasksList(
                         activityId = selectedActivity?.let {
                             it.activityId
                         } ?: 0
-                        userTaskName = inTaskName
                         userTotalTaskTime = inTaskTotalTime
                         userProgress = inTaskProgress
                     }
@@ -326,8 +325,6 @@ fun UserTasksList(
                     userTasks.forEach{
                         userTask -> DropdownMenuItem(onClick = {
                             expanded = false
-                        //Need to review this new code below
-                        //See video https://youtu.be/6dZakQh1KQI
                         if (userTask.activityName == viewModel.NEW_TASK ) {
                             userTaskText = ""
                             userTask.activityName = ""
