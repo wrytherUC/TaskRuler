@@ -37,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -45,8 +44,6 @@ import com.taskruler.utilities.ReminderWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-import android.Manifest
-import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : ComponentActivity() {
 
@@ -80,16 +77,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private val requestSinglePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            isGranted ->
-        if (isGranted) {
-            Toast.makeText(this, getString(R.string.notificationsAvailable), Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(this, getString(R.string.notificationsUnavailable), Toast.LENGTH_LONG).show()
-        }
-    }
-
-@Composable
+    @Composable
 fun UserTasksList(
     name: String,
     activities: List<Activity> = ArrayList(),
@@ -126,8 +114,8 @@ fun UserTasksList(
 
     val mTime = remember { mutableStateOf("") }
 
-    val mDateAndTimePicker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
-        TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, mHour, mMinute ->
+    val mDateAndTimePicker = DatePickerDialog(context, { _, mYear, mMonth, mDayOfMonth ->
+        TimePickerDialog(context, { _, mHour, mMinute ->
             mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
             mTime.value = "$mHour:$mMinute"
         }, mHour, mMinute, false).show()
@@ -460,8 +448,6 @@ fun UserTasksList(
             Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
         }
     }
-
-    fun hasNotificationPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
     private fun createWorkRequest(message: String, title: String, timeDelayInSeconds: Long  ) {
         val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
