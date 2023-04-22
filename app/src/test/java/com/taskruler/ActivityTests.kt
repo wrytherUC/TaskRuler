@@ -92,7 +92,7 @@ class ActivityTests {
     }
 
     private fun DoLaundryIsAddedToDatabase() {
-        var addActivity = ArrayList<Activity>()
+        val addActivity = ArrayList<Activity>()
 
         addActivity.add(laundryActivity)
 
@@ -109,7 +109,7 @@ class ActivityTests {
     }
 
     private fun deleteTask() {
-        var removeTask = addActivities
+        val removeTask = addActivities
 
         removeTask?.drop(0)
 
