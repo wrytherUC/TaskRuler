@@ -105,6 +105,8 @@ fun UserTasksList(
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
 
+    var isEnabled by remember { mutableStateOf(false)}
+
     var chosenYear: Int
     var chosenMonth: Int
     var chosenDay: Int
@@ -234,6 +236,9 @@ fun UserTasksList(
                         .padding(end = 10.dp),
                     onClick = {
                         mDateAndTimePicker.show()
+                        if (mDate.value != null) {
+                            isEnabled = true
+                        }
                     },
                 ) {
                     Text(text = stringResource(R.string.openDataPicker), color = Color.White)
@@ -249,7 +254,8 @@ fun UserTasksList(
                 horizontalArrangement = Arrangement.Center
 
             ) {
-                Button(onClick = {
+                Button(enabled = isEnabled,
+                        onClick = {
                     val userSelectedDateTime = Calendar.getInstance()
 
                     chosenDay = mDate.value.split("/")[0].toInt()
