@@ -224,6 +224,8 @@ fun UserTasksList(
             {
 
                 Button(
+                    modifier = Modifier
+                        .padding(end = 10.dp),
                     onClick = {
                         mDatePickerDialog.show()
                     },
