@@ -15,6 +15,9 @@ import androidx.core.app.NotificationManagerCompat
 import com.taskruler.MainActivity
 import com.taskruler.R
 
+/**
+ * Class that will create a notification on Android device
+ */
 class NotificationHelper(val context: Context) {
     private val CHANNEL_ID = "task_reminder_channel_id"
     private val NOTIFICATION_ID = 1
