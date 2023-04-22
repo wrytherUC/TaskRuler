@@ -142,6 +142,14 @@ fun UserTasksList(
         }, mHour, mMinute, false
     )
 
+    val mDateAndTimePicker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
+        TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, mHour, mMinute ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, false).show()
+    }, mYear, mMonth, mDay)
+
+
     Column {
         TaskSpinner(userTasks = userTasks)
 
@@ -239,18 +247,11 @@ fun UserTasksList(
                     modifier = Modifier
                         .padding(end = 10.dp),
                     onClick = {
-                        mDatePickerDialog.show()
+                        mDateAndTimePicker.show()
                     },
                 ) {
                     Text(text = stringResource(R.string.openDataPicker), color = Color.White)
                 }
-
-                Button(
-                    onClick = {
-                        mTimePickerDialog.show()
-                    },
-                )
-                { Text(text = stringResource(R.string.taskNotificationStartTime)) }
             }
         }
 
@@ -281,15 +282,7 @@ fun UserTasksList(
                     var delayInSeconds =
                         (userSelectedDateTime.timeInMillis / 1000L) - (todayDateTime.timeInMillis / 1000L)
 
-                    if (hasNotificationPermission() == PERMISSION_GRANTED) {
-                        // The user has already granted permission for these activities.  Toggle the camera!
-                        createWorkRequest(inTaskName, inTaskName, delayInSeconds)
-                    } else {
-                        // The user has not granted permissions, so we must request.
-                        requestSinglePermissionLauncher.launch(
-                            Manifest.permission.POST_NOTIFICATIONS,
-                        )
-                    }
+                    createWorkRequest(inTaskName, inTaskName, delayInSeconds)
 
                     Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
 
