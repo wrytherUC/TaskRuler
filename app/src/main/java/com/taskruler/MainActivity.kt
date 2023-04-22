@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.activity.ComponentActivity
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -47,6 +49,8 @@ import com.taskruler.utilities.ReminderWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : ComponentActivity() {
 
@@ -77,6 +81,15 @@ class MainActivity : ComponentActivity() {
                     UserTasksList("Android", activities, userTasks, viewModel.selectedUserTask)
                 }
             }
+        }
+    }
+
+    private val requestSinglePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            isGranted ->
+        if (isGranted) {
+            Toast.makeText(this, getString(R.string.notificationsAvailable), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, getString(R.string.notificationsUnavailable), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -265,9 +278,18 @@ fun UserTasksList(
 
                     (userSelectedDateTime.timeInMillis) - (todayDateTime.timeInMillis)
 
-                    val delayInSeconds = (userSelectedDateTime.timeInMillis/1000L) - (todayDateTime.timeInMillis/1000L)
+                    var delayInSeconds =
+                        (userSelectedDateTime.timeInMillis / 1000L) - (todayDateTime.timeInMillis / 1000L)
 
-                    createWorkRequest(inTaskName, inTaskName, delayInSeconds)
+                    if (hasNotificationPermission() == PERMISSION_GRANTED) {
+                        // The user has already granted permission for these activities.  Toggle the camera!
+                        createWorkRequest(inTaskName, inTaskName, delayInSeconds)
+                    } else {
+                        // The user has not granted permissions, so we must request.
+                        requestSinglePermissionLauncher.launch(
+                            Manifest.permission.POST_NOTIFICATIONS,
+                        )
+                    }
 
                     Toast.makeText(context, "Reminder set", Toast.LENGTH_SHORT).show()
 
@@ -457,6 +479,8 @@ fun UserTasksList(
             Log.e("MainActivity.kt", "Error with logging in " + callbackResponse?.error?.errorCode)
         }
     }
+
+    fun hasNotificationPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
     private fun createWorkRequest(message: String, title: String, timeDelayInSeconds: Long  ) {
         val myWorkRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
