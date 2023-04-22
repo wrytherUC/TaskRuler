@@ -10,4 +10,8 @@
     <string name="openDataPicker">Notification Date</string>
     <string name="taskNotificationStartTime">Notification Time</string>
     <string name="createTaskNotification">Create Task Notification</string>
+    <string name="TaskList">Task List</string>
+    <string name="new_activity">New activity</string>
+    <string name="taskProgressDescription">Task progress Description</string>
+    <string name="activity_name">Activity Name</string>
 </resources>

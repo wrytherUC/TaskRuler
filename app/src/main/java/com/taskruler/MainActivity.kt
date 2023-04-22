@@ -51,12 +51,7 @@ import kotlin.collections.ArrayList
 class MainActivity : ComponentActivity() {
 
     private var selectedActivity: Activity? = null
-    //Might not use the below selectedTask var after update
-    private var selectedUserTask by mutableStateOf(UserTask())
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private var inTaskName: String = ""
-    private var selectedCompleted: String = ""
-
     private val viewModel: MainViewModel by viewModel()
     private var inActivityName: String = ""
 
@@ -93,7 +88,7 @@ fun UserTasksList(
     selectedUserTask : UserTask = UserTask()) {
 
     var inTaskName by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTaskName) }
-    var inIsCompleted by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userIsCompleted) }
+    var inTaskProgress by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userProgress) }
     var inTaskTotalTime by remember(selectedUserTask.userTaskId) { mutableStateOf(selectedUserTask.userTotalTaskTime) }
     val context = LocalContext.current
 
@@ -147,7 +142,7 @@ fun UserTasksList(
 
             ) {
 
-                TextFieldWithDropdownUsage(dataIn = activities, inActivityName, 3, selectedUserTask)
+                TextFieldWithDropdownUsage(dataIn = activities, stringResource(R.string.activity_name), 3, selectedUserTask)
 
             }
         }
@@ -157,8 +152,12 @@ fun UserTasksList(
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-        TrueFalseSpinner()
-
+       
+        OutlinedTextField(
+            value = inTaskProgress,
+            onValueChange = {inTaskProgress = it},
+            label = {Text(stringResource(R.string.taskProgressDescription))})
+               
         Box(
         ) {
             Row(
@@ -176,12 +175,12 @@ fun UserTasksList(
                         } ?: 0
                         userTaskName = inTaskName
                         userTotalTaskTime = inTaskTotalTime
-                        userIsCompleted = inIsCompleted
+                        userProgress = inTaskProgress
                     }
                     viewModel.saveUserTask()
                     Toast.makeText(
                         context,
-                        "$inTaskName $inIsCompleted $inTaskTotalTime",
+                        "$inActivityName  in  $inTaskTotalTime",
                         Toast.LENGTH_LONG
                     ).show()
 
@@ -292,55 +291,11 @@ fun UserTasksList(
                         signIn()
                     }
                 )
-                { Text(text = "Logon") }
+                { Text(text = "Log in") }
             }
         }
     }
 }
-
-    @Composable
-    fun TrueFalseSpinner(){
-        val trueFalseOptions = listOf(
-            getString(R.string.False),
-            getString(R.string.True)
-        )
-        var trueFalseText by remember { mutableStateOf(getString(R.string.completedStatus))}
-        var expanded by remember { mutableStateOf(false)}
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        )
-        {
-            Row(
-                modifier = Modifier
-                    .width(250.dp)
-                    .padding(top = 25.dp)
-                    .clickable { expanded = !expanded }
-                    .border(BorderStroke(1.dp, Color.Black)),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(text = trueFalseText)
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    stringResource(androidx.compose.ui.R.string.dropdown_menu)
-                )
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    trueFalseOptions.forEach { trueFalseOption ->
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            trueFalseText = trueFalseOption
-                        }){
-                            Text(text = trueFalseOption)
-                            selectedCompleted = trueFalseOption
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     //Missing code compared to class/PlantDiary spinner
     //Change made before PlantDiary PR #49
@@ -399,7 +354,7 @@ fun UserTasksList(
         }
 
         fun onValueChanged(value: TextFieldValue) {
-            inTaskName = value.text
+            inActivityName = value.text
             dropDownExpanded.value = true
             textFieldValue.value = value
             dropDownOptions.value = dataIn.filter {
