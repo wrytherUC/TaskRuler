@@ -29,6 +29,8 @@ var TIME_COUNTDOWN: Long = 0
  * Main composable function for the timer activity
  * Sets up the UI and calls the TimerMainViewModel
  * Called by TaskTimerActivity
+ * @taskTime passed from MainActivity total task time
+ * @viewModel Main View Model for TaskTimer
  */
 @Composable
 fun CountDownView(viewModel: TimerMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(), taskTime: Long) {
