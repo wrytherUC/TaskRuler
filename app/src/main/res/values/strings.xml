@@ -3,7 +3,7 @@
     <string name="activtyName">Activity Name</string>
     <string name ="completedStatus">Completed Status</string>
     <string name="activityName">Activity Name</string>
-    <string name="taskTotalTime">Total Time For Task</string>
+    <string name="taskTotalTime">Total Time For Task in Minutes</string>
     <string name="False">False</string>
     <string name="True">True</string>
     <string name="SaveTask">SaveTask</string>

@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
-
+    
     private var selectedActivity: Activity? = null
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel()
@@ -134,23 +134,24 @@ fun UserTasksList(
                 horizontalArrangement = Arrangement.Center
 
             ) {
-
+        // Textfield with autocomplete for activityName
                 TextFieldWithDropdownUsage(dataIn = activities, stringResource(R.string.activity_name), 3, selectedUserTask)
 
             }
         }
-
+        //Textfield for total time to do a task
         OutlinedTextField(
             value = inTaskTotalTime,
             onValueChange = { inTaskTotalTime = it },
             label = { Text(stringResource(R.string.taskTotalTime)) }
         )
-       
+       // textfield for progress on task
         OutlinedTextField(
             value = inTaskProgress,
             onValueChange = {inTaskProgress = it},
             label = {Text(stringResource(R.string.taskProgressDescription))})
-               
+
+        // Box for save button
         Box(
         ) {
             Row(
@@ -180,6 +181,7 @@ fun UserTasksList(
                 {
                     Text(text = stringResource(R.string.SaveTask))
                 }
+
                 Button(onClick = {
                     viewModel.deleteUserTask()
                     inTaskName = ""
@@ -303,8 +305,8 @@ fun UserTasksList(
     }
 }
 
-    //Missing code compared to class/PlantDiary spinner
-    //Change made before PlantDiary PR #49
+
+    // Top Spinner
     @Composable
     fun TaskSpinner (userTasks: List<UserTask>){
         var userTaskText by remember { mutableStateOf("Task List")}
